@@ -1,12 +1,16 @@
 import { PrismaClient } from "@prisma/client";
+import { GetServerSidePropsContext } from "next";
 
 import { env } from "~/env";
+import { enhance } from "@zenstackhq/runtime";
 
-const createPrismaClient = () =>
-  new PrismaClient({
+const createPrismaClient = () => {
+  const db = new PrismaClient({
     log:
       env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
   });
+  return db
+}
 
 const globalForPrisma = globalThis as unknown as {
   prisma: ReturnType<typeof createPrismaClient> | undefined;

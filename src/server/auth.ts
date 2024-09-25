@@ -1,11 +1,14 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import { PrismaClient } from "@prisma/client";
+import { compare } from "bcryptjs";
+import { GetServerSidePropsContext } from "next";
 import {
   getServerSession,
   type DefaultSession,
   type NextAuthOptions,
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
-import DiscordProvider from "next-auth/providers/discord";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 import { env } from "~/env";
 import { db } from "~/server/db";
@@ -37,20 +40,26 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+  session: {
+    strategy: "jwt",
+  },
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+    session({ session, token }) {
+      if (session.user) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        session.user.id = token.sub!;
+      }
+      return session;
+    },
   },
   adapter: PrismaAdapter(db) as Adapter,
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
+    CredentialsProvider({
+      credentials: {
+        email: { type: "email" },
+        password: { type: "password" },
+      },
+      authorize: authorize(db),
     }),
     /**
      * ...add more providers here.
@@ -64,9 +73,37 @@ export const authOptions: NextAuthOptions = {
   ],
 };
 
+function authorize(prisma: PrismaClient) {
+  return async (
+    credentials: Record<"email" | "password", string> | undefined,
+  ) => {
+    if (!credentials) throw new Error("Missing credentials");
+    if (!credentials.email)
+      throw new Error('"email" is required in credentials');
+    if (!credentials.password)
+      throw new Error('"password" is required in credentials');
+    const maybeUser = await prisma.user.findFirst({
+      where: { email: credentials.email },
+      select: { id: true, email: true, password: true },
+    });
+    if (!maybeUser?.password) return null;
+    // verify the input password with stored hash
+    const isValid = await compare(credentials.password, maybeUser.password);
+    if (!isValid) return null;
+    return { id: maybeUser.id, email: maybeUser.email };
+  };
+}
+
 /**
  * Wrapper for `getServerSession` so that you don't need to import the `authOptions` in every file.
  *
  * @see https://next-auth.js.org/configuration/nextjs
  */
 export const getServerAuthSession = () => getServerSession(authOptions);
+
+export const getServerAuthSessionFromContext = async (ctx: {
+  req: GetServerSidePropsContext['req'];
+  res: GetServerSidePropsContext['res'];
+}) => {
+  return getServerSession(ctx.req, ctx.res, authOptions);
+};
