@@ -4,26 +4,71 @@
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL")
 }
 
 generator client {
   provider = "prisma-client-js"
 }
 
-/// @@allow('all', auth() == createdBy)
 /// @@allow('read', auth() != null && published)
 model Post {
-  id          Int      @id() @default(autoincrement())
-  name        String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt()
-  published   Boolean  @default(false)
-  createdBy   User     @relation(fields: [createdById], references: [id])
-  createdById String
+  id        Int      @id() @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+  published Boolean  @default(false)
 
   @@index([name])
+}
+
+/// @@allow('all', check(article, 'read'))
+model Phrase {
+  id                  String        @id() @default(uuid())
+  text                String
+  textTranslation     String?
+  sentence            String?
+  sentenceTranslation String?
+  article             Article       @relation(fields: [articleId], references: [id])
+  articleId           String
+  conversation        Conversation? @relation(fields: [conversationId], references: [id])
+  conversationId      String?       @unique()
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt()
+}
+
+/// @@allow('all', check(collection, 'read'))
+model Article {
+  id           String     @id() @default(uuid())
+  name         String
+  externalLink String?
+  phrases      Phrase[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt()
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  collectionId String
+}
+
+/// @@allow('all', auth() == createdBy)
+model Collection {
+  id           String    @id() @default(uuid())
+  name         String
+  externalLink String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt()
+  articles     Article[]
+  createdBy    User      @relation(fields: [createdById], references: [id])
+  createdById  String
+}
+
+/// @@allow('all', check(phrase, 'read'))
+model Conversation {
+  id        String   @id() @default(uuid())
+  messages  String
+  phrase    Phrase?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }
 
 model Account {
@@ -56,9 +101,9 @@ model Session {
 /// @@allow('create,read', true)
 /// @@allow('update,delete', auth() == this)
 model User {
-  id            String    @id() @default(cuid())
+  id            String       @id() @default(cuid())
   name          String?
-  email         String?   @unique()
+  email         String?      @unique()
   emailVerified DateTime?
   /// @password
   /// @omit
@@ -66,7 +111,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  posts         Post[]
+  collections   Collection[]
 }
 
 model VerificationToken {

@@ -1,6 +1,6 @@
 import { enhance } from '@zenstackhq/runtime';
 import { db } from './db';
-import { getServerAuthSession, getServerAuthSessionFromContext } from './auth';
+import { getServerAuthSession } from './auth';
 import { CreateNextContextOptions } from '@trpc/server/adapters/next';
 import { getSession } from 'next-auth/react';
 import { NextRequest } from 'next/server';

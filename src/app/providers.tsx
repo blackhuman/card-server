@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getFetch, httpBatchLink, loggerLink } from "@trpc/react-query";
 import { SessionProvider } from "next-auth/react";
 import React, { useState } from "react";
-import { trpc } from "~/lib/trpc";
+import { trpcReact as trpc } from "~/server/trpc";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 5 * 1000 } },

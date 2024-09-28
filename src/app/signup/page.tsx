@@ -4,12 +4,12 @@ import type { NextPage } from "next";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
-import { trpc } from "~/lib/trpc";
+import { useCreateUser } from "~/lib/hooks";
 
 const Signup: NextPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { mutateAsync: signup } = trpc.user.create.useMutation();
+  const { mutateAsync: signup } = useCreateUser();
   const router = useRouter();
 
   async function onSignup(e: FormEvent) {

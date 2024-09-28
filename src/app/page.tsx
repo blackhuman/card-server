@@ -1,11 +1,13 @@
 "use client";
 
-import type { Post } from "@prisma/client";
+import { Phrase } from "@zenstackhq/runtime/models";
 import { type NextPage } from "next";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { trpc } from "~/lib/trpc";
+import { use } from "react";
+import { useCreatePhrase, useDeletePhrase, useFindManyCollection, useFindManyPhrase, useUpdatePhrase, useUpsertArticle } from "~/lib/hooks";
+import { trpc } from "~/server/trpc";
 
 type AuthUser = { id: string; email?: string | null };
 
@@ -41,60 +43,105 @@ const SigninSignup = () => {
   );
 };
 
-const Posts = ({ user }: { user: AuthUser }) => {
-  // Post crud hooks
-  const { mutateAsync: createPost } = trpc.post.create.useMutation();
-  const { mutateAsync: updatePost } = trpc.post.update.useMutation();
-  const { mutateAsync: deletePost } = trpc.post.delete.useMutation();
+function useFindAllPhrases() {
 
-  // list all posts that're visible to the current user, together with their authors
-  const { data: posts } = trpc.post.findMany.useQuery({
-    include: { createdBy: true },
+  // const { data: collections = [] } = useFindManyCollection({
+  //   include: { createdBy: true, articles: { include: { phrases: true}} },
+  //   orderBy: { createdAt: "desc" },
+  // })
+  // return collections.flatMap(v => v.articles).flatMap(v => v.phrases)
+  const { data = [] } = useFindManyPhrase({
+    include: { article: { include: { collection: { include: {createdBy: true}} }}},
     orderBy: { createdAt: "desc" },
-  });
+  })
+  return data
+}
 
-  async function onCreatePost() {
-    const name = prompt("Enter post name");
-    if (name) {
-      await createPost({ data: { name } });
+const Phrases = ({ user }: { user: AuthUser }) => {
+  // Post crud hooks
+  const { mutateAsync: createPhrase } = useCreatePhrase();
+  const { mutateAsync: updatePhrase } = useUpdatePhrase();
+  const { mutateAsync: deletePhrase } = useDeletePhrase();
+  const { mutateAsync: upsertArticle } = useUpsertArticle();
+
+  const phrases = useFindAllPhrases()
+
+  async function onCreatePhrase() {
+    const articleLink = 'http://127.0.0.1/resource/1'
+    const collectionLink = 'http://127.0.0.1'
+    let collectionId: string
+    const collection = await trpc.collection.findFirst.query({
+      where: {
+        externalLink: collectionLink
+      }
+    })
+    if (collection) {
+      collectionId = collection.id
+    } else {
+      const _collection = await trpc.collection.create.mutate({
+        data: {
+          externalLink: collectionLink,
+          name: collectionLink,
+        }
+      })
+      collectionId = _collection!.id
+    }
+    let articleId: string
+    const article = await trpc.article.findFirst.query({
+      where: {
+        externalLink: articleLink
+      }
+    })
+    if (article) {
+      articleId = article.id
+    } else {
+      const _article = await trpc.article.create.mutate({
+        data: {
+          externalLink: articleLink,
+          name: articleLink,
+          collection: {
+            connect: { id: collectionId }
+          }
+        }
+      })
+      articleId = _article!.id
+    }
+
+    const text = prompt("Enter post name");
+    if (text) {
+      await createPhrase({ 
+        data: { 
+          text, 
+          article: {
+            connect: { id: articleId }
+          }, 
+        } 
+      });
     }
   }
 
-  async function onTogglePublished(post: Post) {
-    await updatePost({
-      where: { id: post.id },
-      data: { published: !post.published },
-    });
-  }
-
-  async function onDelete(post: Post) {
-    await deletePost({ where: { id: post.id } });
+  async function onDelete(phrase: Phrase) {
+    await deletePhrase({ where: { id: phrase.id } });
   }
 
   return (
     <div className="container flex flex-col text-white">
       <button
         className="rounded border border-white p-2 text-lg"
-        onClick={() => void onCreatePost()}
+        onClick={() => void onCreatePhrase()}
       >
-        + Create Post
+        + Create Phrase
       </button>
 
       <ul className="container mt-8 flex flex-col gap-2">
-        {posts?.map((post) => (
-          <li key={post.id} className="flex items-end justify-between gap-4">
-            <p className={`text-2xl ${!post.published ? "text-gray-400" : ""}`}>
-              {post.name}
-              <span className="text-lg"> by {post.createdBy.email}</span>
+        {phrases?.map((phrase) => (
+          <li key={phrase.id} className="flex items-end justify-between gap-4">
+            <p className={`text-2xl`}>
+              {phrase.text}
+              <span className="text-lg"> by {phrase.article.collection.createdBy.email}</span>
             </p>
             <div className="flex w-32 justify-end gap-1 text-left">
-              <button
-                className="underline"
-                onClick={() => void onTogglePublished(post)}
-              >
-                {post.published ? "Unpublish" : "Publish"}
-              </button>
-              <button className="underline" onClick={() => void onDelete(post)}>
+              <button className="underline" onClick={() => void onDelete(phrase)}>
                 Delete
               </button>
             </div>
@@ -120,7 +167,7 @@ const Home: NextPage = () => {
           <div className="flex flex-col">
             <Welcome user={session.user} />
             <section className="mt-10">
-              <Posts user={session.user} />
+              <Phrases user={session.user} />
             </section>
           </div>
         ) : (

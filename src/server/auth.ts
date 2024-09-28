@@ -101,9 +101,9 @@ function authorize(prisma: PrismaClient) {
  */
 export const getServerAuthSession = () => getServerSession(authOptions);
 
-export const getServerAuthSessionFromContext = async (ctx: {
-  req: GetServerSidePropsContext['req'];
-  res: GetServerSidePropsContext['res'];
-}) => {
-  return getServerSession(ctx.req, ctx.res, authOptions);
-};
+// export const getServerAuthSessionFromContext = async (ctx: {
+//   req: GetServerSidePropsContext['req'];
+//   res: GetServerSidePropsContext['res'];
+// }) => {
+//   return getServerSession(ctx.req, ctx.res, authOptions);
+// };
