@@ -5,7 +5,6 @@ import { type NextPage } from "next";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { use } from "react";
 import { useCreatePhrase, useDeletePhrase, useFindManyCollection, useFindManyPhrase, useUpdatePhrase, useUpsertArticle } from "~/lib/hooks";
 import { trpc } from "~/server/trpc";
 
@@ -78,6 +77,11 @@ const Phrases = ({ user }: { user: AuthUser }) => {
     if (collection) {
       collectionId = collection.id
     } else {
+      const a = await trpc.collection.findMany.query({
+        where: {
+          externalLink: collectionLink
+        }
+      })
       const _collection = await trpc.collection.create.mutate({
         data: {
           externalLink: collectionLink,
@@ -109,7 +113,7 @@ const Phrases = ({ user }: { user: AuthUser }) => {
 
     const text = prompt("Enter post name");
     if (text) {
-      await createPhrase({ 
+      const ab = await createPhrase({ 
         data: { 
           text, 
           article: {
