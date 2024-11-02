@@ -3,6 +3,7 @@
 import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
+import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import Providers from "./providers";
 
 const inter = Inter({
@@ -18,7 +19,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${inter.variable}`}>
-        <Providers>{children}</Providers>
+        <ClerkProvider>
+          <header>
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </header>
+          <Providers>
+            <main>{children}</main>
+          </Providers>
+        </ClerkProvider>
       </body>
     </html>
   );

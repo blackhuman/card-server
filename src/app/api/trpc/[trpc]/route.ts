@@ -4,6 +4,7 @@ import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { NextRequest } from "next/server";
 
 const handler = (request: NextRequest) => {
+  console.log('trpc route')
   return fetchRequestHandler({
     endpoint: "/api/trpc",
     req: request,

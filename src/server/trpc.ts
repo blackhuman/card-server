@@ -6,7 +6,7 @@ export const trpcReact = createTRPCReact<AppRouter>();
 export const trpc = createTRPCProxyClient<AppRouter>({
   links: [
     httpBatchLink({
-      url: 'http://127.0.0.1:3000/api/trpc'
+      url: 'http://localhost:3000/api/trpc'
     })
   ]
 });
@@ -15,7 +15,7 @@ export const trpcNext = createTRPCNext<AppRouter>({
     return {
       links: [
         httpBatchLink({
-          url: 'http://127.0.0.1:3000/api/trpc'
+          url: 'http://localhost:3000/api/trpc'
         })
       ]
     }

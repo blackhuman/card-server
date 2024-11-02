@@ -1,6 +1,4 @@
 openapi: 3.1.0
-servers:
-  - url: http://127.0.0.1:3000/api/model
 info:
   title: card-server
   version: 0.0.1
@@ -13,8 +11,6 @@ tags:
     description: Phrase operations
   - name: article
     description: Article operations
-  - name: collection
-    description: Collection operations
   - name: conversation
     description: Conversation operations
   - name: account
@@ -47,16 +43,8 @@ components:
         - conversationId
         - createdAt
         - updatedAt
+        - createdById
     ArticleScalarFieldEnum:
-      type: string
-      enum:
-        - id
-        - name
-        - externalLink
-        - createdAt
-        - updatedAt
-        - collectionId
-    CollectionScalarFieldEnum:
       type: string
       enum:
         - id
@@ -183,6 +171,8 @@ components:
         updatedAt:
           type: string
           format: date-time
+        createdById:
+          type: string
       required:
         - id
         - text
@@ -190,6 +180,7 @@ components:
         - articleId
         - createdAt
         - updatedAt
+        - createdById
     Article:
       type: object
       properties:
@@ -211,40 +202,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-        collection:
-          $ref: "#/components/schemas/Collection"
-        collectionId:
-          type: string
-      required:
-        - id
-        - name
-        - createdAt
-        - updatedAt
-        - collection
-        - collectionId
-    Collection:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        externalLink:
-          oneOf:
-            - type: "null"
-            - type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        articles:
-          type: array
-          items:
-            $ref: "#/components/schemas/Article"
-        createdBy:
-          $ref: "#/components/schemas/User"
         createdById:
           type: string
       required:
@@ -252,7 +209,6 @@ components:
         - name
         - createdAt
         - updatedAt
-        - createdBy
         - createdById
     Conversation:
       type: object
@@ -382,10 +338,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Session"
-        collections:
-          type: array
-          items:
-            $ref: "#/components/schemas/Collection"
       required:
         - id
         - password
@@ -598,6 +550,10 @@ components:
             - $ref: "#/components/schemas/DateTimeFilter"
             - type: string
               format: date-time
+        createdById:
+          oneOf:
+            - $ref: "#/components/schemas/StringFilter"
+            - type: string
         article:
           oneOf:
             - $ref: "#/components/schemas/ArticleRelationFilter"
@@ -635,6 +591,8 @@ components:
         createdAt:
           $ref: "#/components/schemas/SortOrder"
         updatedAt:
+          $ref: "#/components/schemas/SortOrder"
+        createdById:
           $ref: "#/components/schemas/SortOrder"
         article:
           $ref: "#/components/schemas/ArticleOrderByWithRelationInput"
@@ -696,6 +654,10 @@ components:
             - $ref: "#/components/schemas/DateTimeFilter"
             - type: string
               format: date-time
+        createdById:
+          oneOf:
+            - $ref: "#/components/schemas/StringFilter"
+            - type: string
         article:
           oneOf:
             - $ref: "#/components/schemas/ArticleRelationFilter"
@@ -766,6 +728,10 @@ components:
             - $ref: "#/components/schemas/DateTimeWithAggregatesFilter"
             - type: string
               format: date-time
+        createdById:
+          oneOf:
+            - $ref: "#/components/schemas/StringWithAggregatesFilter"
+            - type: string
     ArticleWhereInput:
       type: object
       properties:
@@ -808,16 +774,12 @@ components:
             - $ref: "#/components/schemas/DateTimeFilter"
             - type: string
               format: date-time
-        collectionId:
+        createdById:
           oneOf:
             - $ref: "#/components/schemas/StringFilter"
             - type: string
         phrases:
           $ref: "#/components/schemas/PhraseListRelationFilter"
-        collection:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionRelationFilter"
-            - $ref: "#/components/schemas/CollectionWhereInput"
     ArticleOrderByWithRelationInput:
       type: object
       properties:
@@ -833,12 +795,10 @@ components:
           $ref: "#/components/schemas/SortOrder"
         updatedAt:
           $ref: "#/components/schemas/SortOrder"
-        collectionId:
+        createdById:
           $ref: "#/components/schemas/SortOrder"
         phrases:
           $ref: "#/components/schemas/PhraseOrderByRelationAggregateInput"
-        collection:
-          $ref: "#/components/schemas/CollectionOrderByWithRelationInput"
     ArticleWhereUniqueInput:
       type: object
       properties:
@@ -879,16 +839,12 @@ components:
             - $ref: "#/components/schemas/DateTimeFilter"
             - type: string
               format: date-time
-        collectionId:
+        createdById:
           oneOf:
             - $ref: "#/components/schemas/StringFilter"
             - type: string
         phrases:
           $ref: "#/components/schemas/PhraseListRelationFilter"
-        collection:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionRelationFilter"
-            - $ref: "#/components/schemas/CollectionWhereInput"
     ArticleScalarWhereWithAggregatesInput:
       type: object
       properties:
@@ -908,175 +864,6 @@ components:
             - type: array
               items:
                 $ref: "#/components/schemas/ArticleScalarWhereWithAggregatesInput"
-        id:
-          oneOf:
-            - $ref: "#/components/schemas/StringWithAggregatesFilter"
-            - type: string
-        name:
-          oneOf:
-            - $ref: "#/components/schemas/StringWithAggregatesFilter"
-            - type: string
-        externalLink:
-          oneOf:
-            - $ref: "#/components/schemas/StringNullableWithAggregatesFilter"
-            - type: string
-            - type: "null"
-        createdAt:
-          oneOf:
-            - $ref: "#/components/schemas/DateTimeWithAggregatesFilter"
-            - type: string
-              format: date-time
-        updatedAt:
-          oneOf:
-            - $ref: "#/components/schemas/DateTimeWithAggregatesFilter"
-            - type: string
-              format: date-time
-        collectionId:
-          oneOf:
-            - $ref: "#/components/schemas/StringWithAggregatesFilter"
-            - type: string
-    CollectionWhereInput:
-      type: object
-      properties:
-        AND:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionWhereInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionWhereInput"
-        OR:
-          type: array
-          items:
-            $ref: "#/components/schemas/CollectionWhereInput"
-        NOT:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionWhereInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionWhereInput"
-        id:
-          oneOf:
-            - $ref: "#/components/schemas/StringFilter"
-            - type: string
-        name:
-          oneOf:
-            - $ref: "#/components/schemas/StringFilter"
-            - type: string
-        externalLink:
-          oneOf:
-            - $ref: "#/components/schemas/StringNullableFilter"
-            - type: string
-            - type: "null"
-        createdAt:
-          oneOf:
-            - $ref: "#/components/schemas/DateTimeFilter"
-            - type: string
-              format: date-time
-        updatedAt:
-          oneOf:
-            - $ref: "#/components/schemas/DateTimeFilter"
-            - type: string
-              format: date-time
-        createdById:
-          oneOf:
-            - $ref: "#/components/schemas/StringFilter"
-            - type: string
-        articles:
-          $ref: "#/components/schemas/ArticleListRelationFilter"
-        createdBy:
-          oneOf:
-            - $ref: "#/components/schemas/UserRelationFilter"
-            - $ref: "#/components/schemas/UserWhereInput"
-    CollectionOrderByWithRelationInput:
-      type: object
-      properties:
-        id:
-          $ref: "#/components/schemas/SortOrder"
-        name:
-          $ref: "#/components/schemas/SortOrder"
-        externalLink:
-          oneOf:
-            - $ref: "#/components/schemas/SortOrder"
-            - $ref: "#/components/schemas/SortOrderInput"
-        createdAt:
-          $ref: "#/components/schemas/SortOrder"
-        updatedAt:
-          $ref: "#/components/schemas/SortOrder"
-        createdById:
-          $ref: "#/components/schemas/SortOrder"
-        articles:
-          $ref: "#/components/schemas/ArticleOrderByRelationAggregateInput"
-        createdBy:
-          $ref: "#/components/schemas/UserOrderByWithRelationInput"
-    CollectionWhereUniqueInput:
-      type: object
-      properties:
-        id:
-          type: string
-        AND:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionWhereInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionWhereInput"
-        OR:
-          type: array
-          items:
-            $ref: "#/components/schemas/CollectionWhereInput"
-        NOT:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionWhereInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionWhereInput"
-        name:
-          oneOf:
-            - $ref: "#/components/schemas/StringFilter"
-            - type: string
-        externalLink:
-          oneOf:
-            - $ref: "#/components/schemas/StringNullableFilter"
-            - type: string
-            - type: "null"
-        createdAt:
-          oneOf:
-            - $ref: "#/components/schemas/DateTimeFilter"
-            - type: string
-              format: date-time
-        updatedAt:
-          oneOf:
-            - $ref: "#/components/schemas/DateTimeFilter"
-            - type: string
-              format: date-time
-        createdById:
-          oneOf:
-            - $ref: "#/components/schemas/StringFilter"
-            - type: string
-        articles:
-          $ref: "#/components/schemas/ArticleListRelationFilter"
-        createdBy:
-          oneOf:
-            - $ref: "#/components/schemas/UserRelationFilter"
-            - $ref: "#/components/schemas/UserWhereInput"
-    CollectionScalarWhereWithAggregatesInput:
-      type: object
-      properties:
-        AND:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionScalarWhereWithAggregatesInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionScalarWhereWithAggregatesInput"
-        OR:
-          type: array
-          items:
-            $ref: "#/components/schemas/CollectionScalarWhereWithAggregatesInput"
-        NOT:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionScalarWhereWithAggregatesInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionScalarWhereWithAggregatesInput"
         id:
           oneOf:
             - $ref: "#/components/schemas/StringWithAggregatesFilter"
@@ -1705,8 +1492,6 @@ components:
           $ref: "#/components/schemas/AccountListRelationFilter"
         sessions:
           $ref: "#/components/schemas/SessionListRelationFilter"
-        collections:
-          $ref: "#/components/schemas/CollectionListRelationFilter"
     UserOrderByWithRelationInput:
       type: object
       properties:
@@ -1734,8 +1519,6 @@ components:
           $ref: "#/components/schemas/AccountOrderByRelationAggregateInput"
         sessions:
           $ref: "#/components/schemas/SessionOrderByRelationAggregateInput"
-        collections:
-          $ref: "#/components/schemas/CollectionOrderByRelationAggregateInput"
     UserWhereUniqueInput:
       type: object
       properties:
@@ -1783,8 +1566,6 @@ components:
           $ref: "#/components/schemas/AccountListRelationFilter"
         sessions:
           $ref: "#/components/schemas/SessionListRelationFilter"
-        collections:
-          $ref: "#/components/schemas/CollectionListRelationFilter"
     UserScalarWhereWithAggregatesInput:
       type: object
       properties:
@@ -2037,6 +1818,8 @@ components:
         updatedAt:
           type: string
           format: date-time
+        createdById:
+          type: string
         article:
           $ref: "#/components/schemas/ArticleCreateNestedOneWithoutPhrasesInput"
         conversation:
@@ -2080,6 +1863,10 @@ components:
             - type: string
               format: date-time
             - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
+        createdById:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
         article:
           $ref: "#/components/schemas/ArticleUpdateOneRequiredWithoutPhrasesNestedInput"
         conversation:
@@ -2115,6 +1902,8 @@ components:
         updatedAt:
           type: string
           format: date-time
+        createdById:
+          type: string
       required:
         - text
         - articleId
@@ -2154,6 +1943,10 @@ components:
             - type: string
               format: date-time
             - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
+        createdById:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
     ArticleCreateInput:
       type: object
       properties:
@@ -2171,13 +1964,12 @@ components:
         updatedAt:
           type: string
           format: date-time
+        createdById:
+          type: string
         phrases:
           $ref: "#/components/schemas/PhraseCreateNestedManyWithoutArticleInput"
-        collection:
-          $ref: "#/components/schemas/CollectionCreateNestedOneWithoutArticlesInput"
       required:
         - name
-        - collection
     ArticleUpdateInput:
       type: object
       properties:
@@ -2204,11 +1996,12 @@ components:
             - type: string
               format: date-time
             - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
+        createdById:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
         phrases:
           $ref: "#/components/schemas/PhraseUpdateManyWithoutArticleNestedInput"
-        collection:
-          $ref: "#/components/schemas/CollectionUpdateOneRequiredWithoutArticlesNestedInp\
-            ut"
     ArticleCreateManyInput:
       type: object
       properties:
@@ -2226,11 +2019,10 @@ components:
         updatedAt:
           type: string
           format: date-time
-        collectionId:
+        createdById:
           type: string
       required:
         - name
-        - collectionId
     ArticleUpdateManyMutationInput:
       type: object
       properties:
@@ -2257,106 +2049,10 @@ components:
             - type: string
               format: date-time
             - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-    CollectionCreateInput:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        externalLink:
-          oneOf:
-            - type: "null"
-            - type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        articles:
-          $ref: "#/components/schemas/ArticleCreateNestedManyWithoutCollectionInput"
-        createdBy:
-          $ref: "#/components/schemas/UserCreateNestedOneWithoutCollectionsInput"
-      required:
-        - name
-    CollectionUpdateInput:
-      type: object
-      properties:
-        id:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        name:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        externalLink:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
-            - type: "null"
-        createdAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        updatedAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        articles:
-          $ref: "#/components/schemas/ArticleUpdateManyWithoutCollectionNestedInput"
-        createdBy:
-          $ref: "#/components/schemas/UserUpdateOneRequiredWithoutCollectionsNestedInput"
-    CollectionCreateManyInput:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        externalLink:
-          oneOf:
-            - type: "null"
-            - type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
         createdById:
-          type: string
-      required:
-        - name
-    CollectionUpdateManyMutationInput:
-      type: object
-      properties:
-        id:
           oneOf:
             - type: string
             - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        name:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        externalLink:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
-            - type: "null"
-        createdAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        updatedAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
     ConversationCreateInput:
       type: object
       properties:
@@ -2747,8 +2443,6 @@ components:
           $ref: "#/components/schemas/AccountCreateNestedManyWithoutUserInput"
         sessions:
           $ref: "#/components/schemas/SessionCreateNestedManyWithoutUserInput"
-        collections:
-          $ref: "#/components/schemas/CollectionCreateNestedManyWithoutCreatedByInput"
       required:
         - password
     UserUpdateInput:
@@ -2787,8 +2481,6 @@ components:
           $ref: "#/components/schemas/AccountUpdateManyWithoutUserNestedInput"
         sessions:
           $ref: "#/components/schemas/SessionUpdateManyWithoutUserNestedInput"
-        collections:
-          $ref: "#/components/schemas/CollectionUpdateManyWithoutCreatedByNestedInput"
     UserCreateManyInput:
       type: object
       properties:
@@ -3257,35 +2949,7 @@ components:
           $ref: "#/components/schemas/PhraseWhereInput"
         none:
           $ref: "#/components/schemas/PhraseWhereInput"
-    CollectionRelationFilter:
-      type: object
-      properties:
-        is:
-          $ref: "#/components/schemas/CollectionWhereInput"
-        isNot:
-          $ref: "#/components/schemas/CollectionWhereInput"
     PhraseOrderByRelationAggregateInput:
-      type: object
-      properties:
-        _count:
-          $ref: "#/components/schemas/SortOrder"
-    ArticleListRelationFilter:
-      type: object
-      properties:
-        every:
-          $ref: "#/components/schemas/ArticleWhereInput"
-        some:
-          $ref: "#/components/schemas/ArticleWhereInput"
-        none:
-          $ref: "#/components/schemas/ArticleWhereInput"
-    UserRelationFilter:
-      type: object
-      properties:
-        is:
-          $ref: "#/components/schemas/UserWhereInput"
-        isNot:
-          $ref: "#/components/schemas/UserWhereInput"
-    ArticleOrderByRelationAggregateInput:
       type: object
       properties:
         _count:
@@ -3333,6 +2997,13 @@ components:
             - type: integer
             - $ref: "#/components/schemas/NestedIntNullableFilter"
             - type: "null"
+    UserRelationFilter:
+      type: object
+      properties:
+        is:
+          $ref: "#/components/schemas/UserWhereInput"
+        isNot:
+          $ref: "#/components/schemas/UserWhereInput"
     AccountProviderProviderAccountIdCompoundUniqueInput:
       type: object
       properties:
@@ -3443,26 +3114,12 @@ components:
           $ref: "#/components/schemas/SessionWhereInput"
         none:
           $ref: "#/components/schemas/SessionWhereInput"
-    CollectionListRelationFilter:
-      type: object
-      properties:
-        every:
-          $ref: "#/components/schemas/CollectionWhereInput"
-        some:
-          $ref: "#/components/schemas/CollectionWhereInput"
-        none:
-          $ref: "#/components/schemas/CollectionWhereInput"
     AccountOrderByRelationAggregateInput:
       type: object
       properties:
         _count:
           $ref: "#/components/schemas/SortOrder"
     SessionOrderByRelationAggregateInput:
-      type: object
-      properties:
-        _count:
-          $ref: "#/components/schemas/SortOrder"
-    CollectionOrderByRelationAggregateInput:
       type: object
       properties:
         _count:
@@ -3639,44 +3296,6 @@ components:
             - type: array
               items:
                 $ref: "#/components/schemas/PhraseWhereUniqueInput"
-    CollectionCreateNestedOneWithoutArticlesInput:
-      type: object
-      properties:
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionCreateWithoutArticlesInput"
-            - $ref: "#/components/schemas/CollectionUncheckedCreateWithoutArticlesInput"
-        connectOrCreate:
-          $ref: "#/components/schemas/CollectionCreateOrConnectWithoutArticlesInput"
-        connect:
-          $ref: "#/components/schemas/CollectionWhereUniqueInput"
-    PhraseUncheckedCreateNestedManyWithoutArticleInput:
-      type: object
-      properties:
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/PhraseCreateWithoutArticleInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/PhraseCreateWithoutArticleInput"
-            - $ref: "#/components/schemas/PhraseUncheckedCreateWithoutArticleInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/PhraseUncheckedCreateWithoutArticleInput"
-        connectOrCreate:
-          oneOf:
-            - $ref: "#/components/schemas/PhraseCreateOrConnectWithoutArticleInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/PhraseCreateOrConnectWithoutArticleInput"
-        createMany:
-          $ref: "#/components/schemas/PhraseCreateManyArticleInputEnvelope"
-        connect:
-          oneOf:
-            - $ref: "#/components/schemas/PhraseWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/PhraseWhereUniqueInput"
     PhraseUpdateManyWithoutArticleNestedInput:
       type: object
       properties:
@@ -3746,314 +3365,6 @@ components:
             - type: array
               items:
                 $ref: "#/components/schemas/PhraseScalarWhereInput"
-    CollectionUpdateOneRequiredWithoutArticlesNestedInput:
-      type: object
-      properties:
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionCreateWithoutArticlesInput"
-            - $ref: "#/components/schemas/CollectionUncheckedCreateWithoutArticlesInput"
-        connectOrCreate:
-          $ref: "#/components/schemas/CollectionCreateOrConnectWithoutArticlesInput"
-        upsert:
-          $ref: "#/components/schemas/CollectionUpsertWithoutArticlesInput"
-        connect:
-          $ref: "#/components/schemas/CollectionWhereUniqueInput"
-        update:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionUpdateToOneWithWhereWithoutArticlesInput"
-            - $ref: "#/components/schemas/CollectionUpdateWithoutArticlesInput"
-            - $ref: "#/components/schemas/CollectionUncheckedUpdateWithoutArticlesInput"
-    PhraseUncheckedUpdateManyWithoutArticleNestedInput:
-      type: object
-      properties:
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/PhraseCreateWithoutArticleInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/PhraseCreateWithoutArticleInput"
-            - $ref: "#/components/schemas/PhraseUncheckedCreateWithoutArticleInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/PhraseUncheckedCreateWithoutArticleInput"
-        connectOrCreate:
-          oneOf:
-            - $ref: "#/components/schemas/PhraseCreateOrConnectWithoutArticleInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/PhraseCreateOrConnectWithoutArticleInput"
-        upsert:
-          oneOf:
-            - $ref: "#/components/schemas/PhraseUpsertWithWhereUniqueWithoutArticleInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/PhraseUpsertWithWhereUniqueWithoutArticleInput"
-        createMany:
-          $ref: "#/components/schemas/PhraseCreateManyArticleInputEnvelope"
-        set:
-          oneOf:
-            - $ref: "#/components/schemas/PhraseWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/PhraseWhereUniqueInput"
-        disconnect:
-          oneOf:
-            - $ref: "#/components/schemas/PhraseWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/PhraseWhereUniqueInput"
-        delete:
-          oneOf:
-            - $ref: "#/components/schemas/PhraseWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/PhraseWhereUniqueInput"
-        connect:
-          oneOf:
-            - $ref: "#/components/schemas/PhraseWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/PhraseWhereUniqueInput"
-        update:
-          oneOf:
-            - $ref: "#/components/schemas/PhraseUpdateWithWhereUniqueWithoutArticleInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/PhraseUpdateWithWhereUniqueWithoutArticleInput"
-        updateMany:
-          oneOf:
-            - $ref: "#/components/schemas/PhraseUpdateManyWithWhereWithoutArticleInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/PhraseUpdateManyWithWhereWithoutArticleInput"
-        deleteMany:
-          oneOf:
-            - $ref: "#/components/schemas/PhraseScalarWhereInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/PhraseScalarWhereInput"
-    ArticleCreateNestedManyWithoutCollectionInput:
-      type: object
-      properties:
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleCreateWithoutCollectionInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleCreateWithoutCollectionInput"
-            - $ref: "#/components/schemas/ArticleUncheckedCreateWithoutCollectionInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleUncheckedCreateWithoutCollectionInput"
-        connectOrCreate:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleCreateOrConnectWithoutCollectionInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleCreateOrConnectWithoutCollectionInput"
-        createMany:
-          $ref: "#/components/schemas/ArticleCreateManyCollectionInputEnvelope"
-        connect:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleWhereUniqueInput"
-    UserCreateNestedOneWithoutCollectionsInput:
-      type: object
-      properties:
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/UserCreateWithoutCollectionsInput"
-            - $ref: "#/components/schemas/UserUncheckedCreateWithoutCollectionsInput"
-        connectOrCreate:
-          $ref: "#/components/schemas/UserCreateOrConnectWithoutCollectionsInput"
-        connect:
-          $ref: "#/components/schemas/UserWhereUniqueInput"
-    ArticleUncheckedCreateNestedManyWithoutCollectionInput:
-      type: object
-      properties:
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleCreateWithoutCollectionInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleCreateWithoutCollectionInput"
-            - $ref: "#/components/schemas/ArticleUncheckedCreateWithoutCollectionInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleUncheckedCreateWithoutCollectionInput"
-        connectOrCreate:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleCreateOrConnectWithoutCollectionInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleCreateOrConnectWithoutCollectionInput"
-        createMany:
-          $ref: "#/components/schemas/ArticleCreateManyCollectionInputEnvelope"
-        connect:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleWhereUniqueInput"
-    ArticleUpdateManyWithoutCollectionNestedInput:
-      type: object
-      properties:
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleCreateWithoutCollectionInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleCreateWithoutCollectionInput"
-            - $ref: "#/components/schemas/ArticleUncheckedCreateWithoutCollectionInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleUncheckedCreateWithoutCollectionInput"
-        connectOrCreate:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleCreateOrConnectWithoutCollectionInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleCreateOrConnectWithoutCollectionInput"
-        upsert:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleUpsertWithWhereUniqueWithoutCollectionInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleUpsertWithWhereUniqueWithoutCollectionInput"
-        createMany:
-          $ref: "#/components/schemas/ArticleCreateManyCollectionInputEnvelope"
-        set:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleWhereUniqueInput"
-        disconnect:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleWhereUniqueInput"
-        delete:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleWhereUniqueInput"
-        connect:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleWhereUniqueInput"
-        update:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleUpdateWithWhereUniqueWithoutCollectionInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleUpdateWithWhereUniqueWithoutCollectionInput"
-        updateMany:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleUpdateManyWithWhereWithoutCollectionInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleUpdateManyWithWhereWithoutCollectionInput"
-        deleteMany:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleScalarWhereInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleScalarWhereInput"
-    UserUpdateOneRequiredWithoutCollectionsNestedInput:
-      type: object
-      properties:
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/UserCreateWithoutCollectionsInput"
-            - $ref: "#/components/schemas/UserUncheckedCreateWithoutCollectionsInput"
-        connectOrCreate:
-          $ref: "#/components/schemas/UserCreateOrConnectWithoutCollectionsInput"
-        upsert:
-          $ref: "#/components/schemas/UserUpsertWithoutCollectionsInput"
-        connect:
-          $ref: "#/components/schemas/UserWhereUniqueInput"
-        update:
-          oneOf:
-            - $ref: "#/components/schemas/UserUpdateToOneWithWhereWithoutCollectionsInput"
-            - $ref: "#/components/schemas/UserUpdateWithoutCollectionsInput"
-            - $ref: "#/components/schemas/UserUncheckedUpdateWithoutCollectionsInput"
-    ArticleUncheckedUpdateManyWithoutCollectionNestedInput:
-      type: object
-      properties:
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleCreateWithoutCollectionInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleCreateWithoutCollectionInput"
-            - $ref: "#/components/schemas/ArticleUncheckedCreateWithoutCollectionInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleUncheckedCreateWithoutCollectionInput"
-        connectOrCreate:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleCreateOrConnectWithoutCollectionInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleCreateOrConnectWithoutCollectionInput"
-        upsert:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleUpsertWithWhereUniqueWithoutCollectionInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleUpsertWithWhereUniqueWithoutCollectionInput"
-        createMany:
-          $ref: "#/components/schemas/ArticleCreateManyCollectionInputEnvelope"
-        set:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleWhereUniqueInput"
-        disconnect:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleWhereUniqueInput"
-        delete:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleWhereUniqueInput"
-        connect:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleWhereUniqueInput"
-        update:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleUpdateWithWhereUniqueWithoutCollectionInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleUpdateWithWhereUniqueWithoutCollectionInput"
-        updateMany:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleUpdateManyWithWhereWithoutCollectionInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleUpdateManyWithWhereWithoutCollectionInput"
-        deleteMany:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleScalarWhereInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleScalarWhereInput"
     PhraseCreateNestedOneWithoutConversationInput:
       type: object
       properties:
@@ -4218,33 +3529,6 @@ components:
             - type: array
               items:
                 $ref: "#/components/schemas/SessionWhereUniqueInput"
-    CollectionCreateNestedManyWithoutCreatedByInput:
-      type: object
-      properties:
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionCreateWithoutCreatedByInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionCreateWithoutCreatedByInput"
-            - $ref: "#/components/schemas/CollectionUncheckedCreateWithoutCreatedByInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionUncheckedCreateWithoutCreatedByInput"
-        connectOrCreate:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionCreateOrConnectWithoutCreatedByInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionCreateOrConnectWithoutCreatedByInput"
-        createMany:
-          $ref: "#/components/schemas/CollectionCreateManyCreatedByInputEnvelope"
-        connect:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionWhereUniqueInput"
     AccountUncheckedCreateNestedManyWithoutUserInput:
       type: object
       properties:
@@ -4299,33 +3583,6 @@ components:
             - type: array
               items:
                 $ref: "#/components/schemas/SessionWhereUniqueInput"
-    CollectionUncheckedCreateNestedManyWithoutCreatedByInput:
-      type: object
-      properties:
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionCreateWithoutCreatedByInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionCreateWithoutCreatedByInput"
-            - $ref: "#/components/schemas/CollectionUncheckedCreateWithoutCreatedByInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionUncheckedCreateWithoutCreatedByInput"
-        connectOrCreate:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionCreateOrConnectWithoutCreatedByInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionCreateOrConnectWithoutCreatedByInput"
-        createMany:
-          $ref: "#/components/schemas/CollectionCreateManyCreatedByInputEnvelope"
-        connect:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionWhereUniqueInput"
     NullableDateTimeFieldUpdateOperationsInput:
       type: object
       properties:
@@ -4472,79 +3729,6 @@ components:
             - type: array
               items:
                 $ref: "#/components/schemas/SessionScalarWhereInput"
-    CollectionUpdateManyWithoutCreatedByNestedInput:
-      type: object
-      properties:
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionCreateWithoutCreatedByInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionCreateWithoutCreatedByInput"
-            - $ref: "#/components/schemas/CollectionUncheckedCreateWithoutCreatedByInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionUncheckedCreateWithoutCreatedByInput"
-        connectOrCreate:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionCreateOrConnectWithoutCreatedByInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionCreateOrConnectWithoutCreatedByInput"
-        upsert:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionUpsertWithWhereUniqueWithoutCreatedByInpu\
-                t"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionUpsertWithWhereUniqueWithoutCreatedByInpu\
-                  t"
-        createMany:
-          $ref: "#/components/schemas/CollectionCreateManyCreatedByInputEnvelope"
-        set:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionWhereUniqueInput"
-        disconnect:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionWhereUniqueInput"
-        delete:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionWhereUniqueInput"
-        connect:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionWhereUniqueInput"
-        update:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionUpdateWithWhereUniqueWithoutCreatedByInpu\
-                t"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionUpdateWithWhereUniqueWithoutCreatedByInpu\
-                  t"
-        updateMany:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionUpdateManyWithWhereWithoutCreatedByInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionUpdateManyWithWhereWithoutCreatedByInput"
-        deleteMany:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionScalarWhereInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionScalarWhereInput"
     AccountUncheckedUpdateManyWithoutUserNestedInput:
       type: object
       properties:
@@ -4683,79 +3867,6 @@ components:
             - type: array
               items:
                 $ref: "#/components/schemas/SessionScalarWhereInput"
-    CollectionUncheckedUpdateManyWithoutCreatedByNestedInput:
-      type: object
-      properties:
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionCreateWithoutCreatedByInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionCreateWithoutCreatedByInput"
-            - $ref: "#/components/schemas/CollectionUncheckedCreateWithoutCreatedByInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionUncheckedCreateWithoutCreatedByInput"
-        connectOrCreate:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionCreateOrConnectWithoutCreatedByInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionCreateOrConnectWithoutCreatedByInput"
-        upsert:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionUpsertWithWhereUniqueWithoutCreatedByInpu\
-                t"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionUpsertWithWhereUniqueWithoutCreatedByInpu\
-                  t"
-        createMany:
-          $ref: "#/components/schemas/CollectionCreateManyCreatedByInputEnvelope"
-        set:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionWhereUniqueInput"
-        disconnect:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionWhereUniqueInput"
-        delete:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionWhereUniqueInput"
-        connect:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionWhereUniqueInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionWhereUniqueInput"
-        update:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionUpdateWithWhereUniqueWithoutCreatedByInpu\
-                t"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionUpdateWithWhereUniqueWithoutCreatedByInpu\
-                  t"
-        updateMany:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionUpdateManyWithWhereWithoutCreatedByInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionUpdateManyWithWhereWithoutCreatedByInput"
-        deleteMany:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionScalarWhereInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionScalarWhereInput"
     NestedIntFilter:
       type: object
       properties:
@@ -5296,11 +4407,10 @@ components:
         updatedAt:
           type: string
           format: date-time
-        collection:
-          $ref: "#/components/schemas/CollectionCreateNestedOneWithoutArticlesInput"
+        createdById:
+          type: string
       required:
         - name
-        - collection
     ArticleUncheckedCreateWithoutPhrasesInput:
       type: object
       properties:
@@ -5318,11 +4428,10 @@ components:
         updatedAt:
           type: string
           format: date-time
-        collectionId:
+        createdById:
           type: string
       required:
         - name
-        - collectionId
     ArticleCreateOrConnectWithoutPhrasesInput:
       type: object
       properties:
@@ -5430,9 +4539,10 @@ components:
             - type: string
               format: date-time
             - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        collection:
-          $ref: "#/components/schemas/CollectionUpdateOneRequiredWithoutArticlesNestedInp\
-            ut"
+        createdById:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
     ArticleUncheckedUpdateWithoutPhrasesInput:
       type: object
       properties:
@@ -5459,7 +4569,7 @@ components:
             - type: string
               format: date-time
             - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        collectionId:
+        createdById:
           oneOf:
             - type: string
             - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
@@ -5557,6 +4667,8 @@ components:
         updatedAt:
           type: string
           format: date-time
+        createdById:
+          type: string
         conversation:
           $ref: "#/components/schemas/ConversationCreateNestedOneWithoutPhraseInput"
       required:
@@ -5590,6 +4702,8 @@ components:
         updatedAt:
           type: string
           format: date-time
+        createdById:
+          type: string
       required:
         - text
     PhraseCreateOrConnectWithoutArticleInput:
@@ -5617,60 +4731,6 @@ components:
           type: boolean
       required:
         - data
-    CollectionCreateWithoutArticlesInput:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        externalLink:
-          oneOf:
-            - type: "null"
-            - type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        createdBy:
-          $ref: "#/components/schemas/UserCreateNestedOneWithoutCollectionsInput"
-      required:
-        - name
-    CollectionUncheckedCreateWithoutArticlesInput:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        externalLink:
-          oneOf:
-            - type: "null"
-            - type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        createdById:
-          type: string
-      required:
-        - name
-    CollectionCreateOrConnectWithoutArticlesInput:
-      type: object
-      properties:
-        where:
-          $ref: "#/components/schemas/CollectionWhereUniqueInput"
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionCreateWithoutArticlesInput"
-            - $ref: "#/components/schemas/CollectionUncheckedCreateWithoutArticlesInput"
-      required:
-        - where
-        - create
     PhraseUpsertWithWhereUniqueWithoutArticleInput:
       type: object
       properties:
@@ -5773,416 +4833,10 @@ components:
             - $ref: "#/components/schemas/DateTimeFilter"
             - type: string
               format: date-time
-    CollectionUpsertWithoutArticlesInput:
-      type: object
-      properties:
-        update:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionUpdateWithoutArticlesInput"
-            - $ref: "#/components/schemas/CollectionUncheckedUpdateWithoutArticlesInput"
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionCreateWithoutArticlesInput"
-            - $ref: "#/components/schemas/CollectionUncheckedCreateWithoutArticlesInput"
-        where:
-          $ref: "#/components/schemas/CollectionWhereInput"
-      required:
-        - update
-        - create
-    CollectionUpdateToOneWithWhereWithoutArticlesInput:
-      type: object
-      properties:
-        where:
-          $ref: "#/components/schemas/CollectionWhereInput"
-        data:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionUpdateWithoutArticlesInput"
-            - $ref: "#/components/schemas/CollectionUncheckedUpdateWithoutArticlesInput"
-      required:
-        - data
-    CollectionUpdateWithoutArticlesInput:
-      type: object
-      properties:
-        id:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        name:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        externalLink:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
-            - type: "null"
-        createdAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        updatedAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        createdBy:
-          $ref: "#/components/schemas/UserUpdateOneRequiredWithoutCollectionsNestedInput"
-    CollectionUncheckedUpdateWithoutArticlesInput:
-      type: object
-      properties:
-        id:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        name:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        externalLink:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
-            - type: "null"
-        createdAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        updatedAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
         createdById:
           oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-    ArticleCreateWithoutCollectionInput:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        externalLink:
-          oneOf:
-            - type: "null"
-            - type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        phrases:
-          $ref: "#/components/schemas/PhraseCreateNestedManyWithoutArticleInput"
-      required:
-        - name
-    ArticleUncheckedCreateWithoutCollectionInput:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        externalLink:
-          oneOf:
-            - type: "null"
-            - type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        phrases:
-          $ref: "#/components/schemas/PhraseUncheckedCreateNestedManyWithoutArticleInput"
-      required:
-        - name
-    ArticleCreateOrConnectWithoutCollectionInput:
-      type: object
-      properties:
-        where:
-          $ref: "#/components/schemas/ArticleWhereUniqueInput"
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleCreateWithoutCollectionInput"
-            - $ref: "#/components/schemas/ArticleUncheckedCreateWithoutCollectionInput"
-      required:
-        - where
-        - create
-    ArticleCreateManyCollectionInputEnvelope:
-      type: object
-      properties:
-        data:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleCreateManyCollectionInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleCreateManyCollectionInput"
-        skipDuplicates:
-          type: boolean
-      required:
-        - data
-    UserCreateWithoutCollectionsInput:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          oneOf:
-            - type: "null"
-            - type: string
-        email:
-          oneOf:
-            - type: "null"
-            - type: string
-        emailVerified:
-          oneOf:
-            - type: "null"
-            - type: string
-              format: date-time
-        password:
-          type: string
-        image:
-          oneOf:
-            - type: "null"
-            - type: string
-        accounts:
-          $ref: "#/components/schemas/AccountCreateNestedManyWithoutUserInput"
-        sessions:
-          $ref: "#/components/schemas/SessionCreateNestedManyWithoutUserInput"
-      required:
-        - password
-    UserUncheckedCreateWithoutCollectionsInput:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          oneOf:
-            - type: "null"
-            - type: string
-        email:
-          oneOf:
-            - type: "null"
-            - type: string
-        emailVerified:
-          oneOf:
-            - type: "null"
-            - type: string
-              format: date-time
-        password:
-          type: string
-        image:
-          oneOf:
-            - type: "null"
-            - type: string
-        accounts:
-          $ref: "#/components/schemas/AccountUncheckedCreateNestedManyWithoutUserInput"
-        sessions:
-          $ref: "#/components/schemas/SessionUncheckedCreateNestedManyWithoutUserInput"
-      required:
-        - password
-    UserCreateOrConnectWithoutCollectionsInput:
-      type: object
-      properties:
-        where:
-          $ref: "#/components/schemas/UserWhereUniqueInput"
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/UserCreateWithoutCollectionsInput"
-            - $ref: "#/components/schemas/UserUncheckedCreateWithoutCollectionsInput"
-      required:
-        - where
-        - create
-    ArticleUpsertWithWhereUniqueWithoutCollectionInput:
-      type: object
-      properties:
-        where:
-          $ref: "#/components/schemas/ArticleWhereUniqueInput"
-        update:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleUpdateWithoutCollectionInput"
-            - $ref: "#/components/schemas/ArticleUncheckedUpdateWithoutCollectionInput"
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleCreateWithoutCollectionInput"
-            - $ref: "#/components/schemas/ArticleUncheckedCreateWithoutCollectionInput"
-      required:
-        - where
-        - update
-        - create
-    ArticleUpdateWithWhereUniqueWithoutCollectionInput:
-      type: object
-      properties:
-        where:
-          $ref: "#/components/schemas/ArticleWhereUniqueInput"
-        data:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleUpdateWithoutCollectionInput"
-            - $ref: "#/components/schemas/ArticleUncheckedUpdateWithoutCollectionInput"
-      required:
-        - where
-        - data
-    ArticleUpdateManyWithWhereWithoutCollectionInput:
-      type: object
-      properties:
-        where:
-          $ref: "#/components/schemas/ArticleScalarWhereInput"
-        data:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleUpdateManyMutationInput"
-            - $ref: "#/components/schemas/ArticleUncheckedUpdateManyWithoutCollectionInput"
-      required:
-        - where
-        - data
-    ArticleScalarWhereInput:
-      type: object
-      properties:
-        AND:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleScalarWhereInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleScalarWhereInput"
-        OR:
-          type: array
-          items:
-            $ref: "#/components/schemas/ArticleScalarWhereInput"
-        NOT:
-          oneOf:
-            - $ref: "#/components/schemas/ArticleScalarWhereInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/ArticleScalarWhereInput"
-        id:
-          oneOf:
             - $ref: "#/components/schemas/StringFilter"
             - type: string
-        name:
-          oneOf:
-            - $ref: "#/components/schemas/StringFilter"
-            - type: string
-        externalLink:
-          oneOf:
-            - $ref: "#/components/schemas/StringNullableFilter"
-            - type: string
-            - type: "null"
-        createdAt:
-          oneOf:
-            - $ref: "#/components/schemas/DateTimeFilter"
-            - type: string
-              format: date-time
-        updatedAt:
-          oneOf:
-            - $ref: "#/components/schemas/DateTimeFilter"
-            - type: string
-              format: date-time
-        collectionId:
-          oneOf:
-            - $ref: "#/components/schemas/StringFilter"
-            - type: string
-    UserUpsertWithoutCollectionsInput:
-      type: object
-      properties:
-        update:
-          oneOf:
-            - $ref: "#/components/schemas/UserUpdateWithoutCollectionsInput"
-            - $ref: "#/components/schemas/UserUncheckedUpdateWithoutCollectionsInput"
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/UserCreateWithoutCollectionsInput"
-            - $ref: "#/components/schemas/UserUncheckedCreateWithoutCollectionsInput"
-        where:
-          $ref: "#/components/schemas/UserWhereInput"
-      required:
-        - update
-        - create
-    UserUpdateToOneWithWhereWithoutCollectionsInput:
-      type: object
-      properties:
-        where:
-          $ref: "#/components/schemas/UserWhereInput"
-        data:
-          oneOf:
-            - $ref: "#/components/schemas/UserUpdateWithoutCollectionsInput"
-            - $ref: "#/components/schemas/UserUncheckedUpdateWithoutCollectionsInput"
-      required:
-        - data
-    UserUpdateWithoutCollectionsInput:
-      type: object
-      properties:
-        id:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        name:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
-            - type: "null"
-        email:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
-            - type: "null"
-        emailVerified:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/NullableDateTimeFieldUpdateOperationsInput"
-            - type: "null"
-        password:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        image:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
-            - type: "null"
-        accounts:
-          $ref: "#/components/schemas/AccountUpdateManyWithoutUserNestedInput"
-        sessions:
-          $ref: "#/components/schemas/SessionUpdateManyWithoutUserNestedInput"
-    UserUncheckedUpdateWithoutCollectionsInput:
-      type: object
-      properties:
-        id:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        name:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
-            - type: "null"
-        email:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
-            - type: "null"
-        emailVerified:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/NullableDateTimeFieldUpdateOperationsInput"
-            - type: "null"
-        password:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        image:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
-            - type: "null"
-        accounts:
-          $ref: "#/components/schemas/AccountUncheckedUpdateManyWithoutUserNestedInput"
-        sessions:
-          $ref: "#/components/schemas/SessionUncheckedUpdateManyWithoutUserNestedInput"
     PhraseCreateWithoutConversationInput:
       type: object
       properties:
@@ -6208,6 +4862,8 @@ components:
         updatedAt:
           type: string
           format: date-time
+        createdById:
+          type: string
         article:
           $ref: "#/components/schemas/ArticleCreateNestedOneWithoutPhrasesInput"
       required:
@@ -6240,6 +4896,8 @@ components:
         updatedAt:
           type: string
           format: date-time
+        createdById:
+          type: string
       required:
         - text
         - articleId
@@ -6318,6 +4976,10 @@ components:
             - type: string
               format: date-time
             - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
+        createdById:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
         article:
           $ref: "#/components/schemas/ArticleUpdateOneRequiredWithoutPhrasesNestedInput"
     PhraseUncheckedUpdateWithoutConversationInput:
@@ -6360,6 +5022,10 @@ components:
             - type: string
               format: date-time
             - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
+        createdById:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
     UserCreateWithoutAccountsInput:
       type: object
       properties:
@@ -6386,8 +5052,6 @@ components:
             - type: string
         sessions:
           $ref: "#/components/schemas/SessionCreateNestedManyWithoutUserInput"
-        collections:
-          $ref: "#/components/schemas/CollectionCreateNestedManyWithoutCreatedByInput"
       required:
         - password
     UserUncheckedCreateWithoutAccountsInput:
@@ -6416,9 +5080,6 @@ components:
             - type: string
         sessions:
           $ref: "#/components/schemas/SessionUncheckedCreateNestedManyWithoutUserInput"
-        collections:
-          $ref: "#/components/schemas/CollectionUncheckedCreateNestedManyWithoutCreatedBy\
-            Input"
       required:
         - password
     UserCreateOrConnectWithoutAccountsInput:
@@ -6494,8 +5155,6 @@ components:
             - type: "null"
         sessions:
           $ref: "#/components/schemas/SessionUpdateManyWithoutUserNestedInput"
-        collections:
-          $ref: "#/components/schemas/CollectionUpdateManyWithoutCreatedByNestedInput"
     UserUncheckedUpdateWithoutAccountsInput:
       type: object
       properties:
@@ -6530,9 +5189,6 @@ components:
             - type: "null"
         sessions:
           $ref: "#/components/schemas/SessionUncheckedUpdateManyWithoutUserNestedInput"
-        collections:
-          $ref: "#/components/schemas/CollectionUncheckedUpdateManyWithoutCreatedByNested\
-            Input"
     UserCreateWithoutSessionsInput:
       type: object
       properties:
@@ -6559,8 +5215,6 @@ components:
             - type: string
         accounts:
           $ref: "#/components/schemas/AccountCreateNestedManyWithoutUserInput"
-        collections:
-          $ref: "#/components/schemas/CollectionCreateNestedManyWithoutCreatedByInput"
       required:
         - password
     UserUncheckedCreateWithoutSessionsInput:
@@ -6589,9 +5243,6 @@ components:
             - type: string
         accounts:
           $ref: "#/components/schemas/AccountUncheckedCreateNestedManyWithoutUserInput"
-        collections:
-          $ref: "#/components/schemas/CollectionUncheckedCreateNestedManyWithoutCreatedBy\
-            Input"
       required:
         - password
     UserCreateOrConnectWithoutSessionsInput:
@@ -6667,8 +5318,6 @@ components:
             - type: "null"
         accounts:
           $ref: "#/components/schemas/AccountUpdateManyWithoutUserNestedInput"
-        collections:
-          $ref: "#/components/schemas/CollectionUpdateManyWithoutCreatedByNestedInput"
     UserUncheckedUpdateWithoutSessionsInput:
       type: object
       properties:
@@ -6703,9 +5352,6 @@ components:
             - type: "null"
         accounts:
           $ref: "#/components/schemas/AccountUncheckedUpdateManyWithoutUserNestedInput"
-        collections:
-          $ref: "#/components/schemas/CollectionUncheckedUpdateManyWithoutCreatedByNested\
-            Input"
     AccountCreateWithoutUserInput:
       type: object
       properties:
@@ -6872,74 +5518,6 @@ components:
             - type: array
               items:
                 $ref: "#/components/schemas/SessionCreateManyUserInput"
-        skipDuplicates:
-          type: boolean
-      required:
-        - data
-    CollectionCreateWithoutCreatedByInput:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        externalLink:
-          oneOf:
-            - type: "null"
-            - type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        articles:
-          $ref: "#/components/schemas/ArticleCreateNestedManyWithoutCollectionInput"
-      required:
-        - name
-    CollectionUncheckedCreateWithoutCreatedByInput:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        externalLink:
-          oneOf:
-            - type: "null"
-            - type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        articles:
-          $ref: "#/components/schemas/ArticleUncheckedCreateNestedManyWithoutCollectionIn\
-            put"
-      required:
-        - name
-    CollectionCreateOrConnectWithoutCreatedByInput:
-      type: object
-      properties:
-        where:
-          $ref: "#/components/schemas/CollectionWhereUniqueInput"
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionCreateWithoutCreatedByInput"
-            - $ref: "#/components/schemas/CollectionUncheckedCreateWithoutCreatedByInput"
-      required:
-        - where
-        - create
-    CollectionCreateManyCreatedByInputEnvelope:
-      type: object
-      properties:
-        data:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionCreateManyCreatedByInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionCreateManyCreatedByInput"
         skipDuplicates:
           type: boolean
       required:
@@ -7141,93 +5719,6 @@ components:
             - $ref: "#/components/schemas/DateTimeFilter"
             - type: string
               format: date-time
-    CollectionUpsertWithWhereUniqueWithoutCreatedByInput:
-      type: object
-      properties:
-        where:
-          $ref: "#/components/schemas/CollectionWhereUniqueInput"
-        update:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionUpdateWithoutCreatedByInput"
-            - $ref: "#/components/schemas/CollectionUncheckedUpdateWithoutCreatedByInput"
-        create:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionCreateWithoutCreatedByInput"
-            - $ref: "#/components/schemas/CollectionUncheckedCreateWithoutCreatedByInput"
-      required:
-        - where
-        - update
-        - create
-    CollectionUpdateWithWhereUniqueWithoutCreatedByInput:
-      type: object
-      properties:
-        where:
-          $ref: "#/components/schemas/CollectionWhereUniqueInput"
-        data:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionUpdateWithoutCreatedByInput"
-            - $ref: "#/components/schemas/CollectionUncheckedUpdateWithoutCreatedByInput"
-      required:
-        - where
-        - data
-    CollectionUpdateManyWithWhereWithoutCreatedByInput:
-      type: object
-      properties:
-        where:
-          $ref: "#/components/schemas/CollectionScalarWhereInput"
-        data:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionUpdateManyMutationInput"
-            - $ref: "#/components/schemas/CollectionUncheckedUpdateManyWithoutCreatedByInput"
-      required:
-        - where
-        - data
-    CollectionScalarWhereInput:
-      type: object
-      properties:
-        AND:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionScalarWhereInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionScalarWhereInput"
-        OR:
-          type: array
-          items:
-            $ref: "#/components/schemas/CollectionScalarWhereInput"
-        NOT:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionScalarWhereInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionScalarWhereInput"
-        id:
-          oneOf:
-            - $ref: "#/components/schemas/StringFilter"
-            - type: string
-        name:
-          oneOf:
-            - $ref: "#/components/schemas/StringFilter"
-            - type: string
-        externalLink:
-          oneOf:
-            - $ref: "#/components/schemas/StringNullableFilter"
-            - type: string
-            - type: "null"
-        createdAt:
-          oneOf:
-            - $ref: "#/components/schemas/DateTimeFilter"
-            - type: string
-              format: date-time
-        updatedAt:
-          oneOf:
-            - $ref: "#/components/schemas/DateTimeFilter"
-            - type: string
-              format: date-time
-        createdById:
-          oneOf:
-            - $ref: "#/components/schemas/StringFilter"
-            - type: string
     PhraseCreateManyArticleInput:
       type: object
       properties:
@@ -7257,6 +5748,8 @@ components:
         updatedAt:
           type: string
           format: date-time
+        createdById:
+          type: string
       required:
         - text
     PhraseUpdateWithoutArticleInput:
@@ -7295,6 +5788,10 @@ components:
             - type: string
               format: date-time
             - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
+        createdById:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
         conversation:
           $ref: "#/components/schemas/ConversationUpdateOneWithoutPhraseNestedInput"
     PhraseUncheckedUpdateWithoutArticleInput:
@@ -7338,6 +5835,10 @@ components:
             - type: string
               format: date-time
             - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
+        createdById:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
     PhraseUncheckedUpdateManyWithoutArticleInput:
       type: object
       properties:
@@ -7379,107 +5880,10 @@ components:
             - type: string
               format: date-time
             - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-    ArticleCreateManyCollectionInput:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        externalLink:
-          oneOf:
-            - type: "null"
-            - type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      required:
-        - name
-    ArticleUpdateWithoutCollectionInput:
-      type: object
-      properties:
-        id:
+        createdById:
           oneOf:
             - type: string
             - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        name:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        externalLink:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
-            - type: "null"
-        createdAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        updatedAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        phrases:
-          $ref: "#/components/schemas/PhraseUpdateManyWithoutArticleNestedInput"
-    ArticleUncheckedUpdateWithoutCollectionInput:
-      type: object
-      properties:
-        id:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        name:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        externalLink:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
-            - type: "null"
-        createdAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        updatedAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        phrases:
-          $ref: "#/components/schemas/PhraseUncheckedUpdateManyWithoutArticleNestedInput"
-    ArticleUncheckedUpdateManyWithoutCollectionInput:
-      type: object
-      properties:
-        id:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        name:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        externalLink:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
-            - type: "null"
-        createdAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        updatedAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
     AccountCreateManyUserInput:
       type: object
       properties:
@@ -7540,25 +5944,6 @@ components:
       required:
         - sessionToken
         - expires
-    CollectionCreateManyCreatedByInput:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        externalLink:
-          oneOf:
-            - type: "null"
-            - type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      required:
-        - name
     AccountUpdateWithoutUserInput:
       type: object
       properties:
@@ -7784,89 +6169,6 @@ components:
             - type: string
               format: date-time
             - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-    CollectionUpdateWithoutCreatedByInput:
-      type: object
-      properties:
-        id:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        name:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        externalLink:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
-            - type: "null"
-        createdAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        updatedAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        articles:
-          $ref: "#/components/schemas/ArticleUpdateManyWithoutCollectionNestedInput"
-    CollectionUncheckedUpdateWithoutCreatedByInput:
-      type: object
-      properties:
-        id:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        name:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        externalLink:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
-            - type: "null"
-        createdAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        updatedAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        articles:
-          $ref: "#/components/schemas/ArticleUncheckedUpdateManyWithoutCollectionNestedIn\
-            put"
-    CollectionUncheckedUpdateManyWithoutCreatedByInput:
-      type: object
-      properties:
-        id:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        name:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        externalLink:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
-            - type: "null"
-        createdAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        updatedAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
     PhraseArgs:
       type: object
       properties:
@@ -7881,13 +6183,6 @@ components:
           $ref: "#/components/schemas/ArticleSelect"
         include:
           $ref: "#/components/schemas/ArticleInclude"
-    CollectionArgs:
-      type: object
-      properties:
-        select:
-          $ref: "#/components/schemas/CollectionSelect"
-        include:
-          $ref: "#/components/schemas/CollectionInclude"
     ConversationArgs:
       type: object
       properties:
@@ -7920,29 +6215,10 @@ components:
           oneOf:
             - type: boolean
             - $ref: "#/components/schemas/PhraseFindManyArgs"
-        collection:
-          oneOf:
-            - type: boolean
-            - $ref: "#/components/schemas/CollectionArgs"
         _count:
           oneOf:
             - type: boolean
             - $ref: "#/components/schemas/ArticleCountOutputTypeArgs"
-    CollectionInclude:
-      type: object
-      properties:
-        articles:
-          oneOf:
-            - type: boolean
-            - $ref: "#/components/schemas/ArticleFindManyArgs"
-        createdBy:
-          oneOf:
-            - type: boolean
-            - $ref: "#/components/schemas/UserArgs"
-        _count:
-          oneOf:
-            - type: boolean
-            - $ref: "#/components/schemas/CollectionCountOutputTypeArgs"
     ConversationInclude:
       type: object
       properties:
@@ -7975,10 +6251,6 @@ components:
           oneOf:
             - type: boolean
             - $ref: "#/components/schemas/SessionFindManyArgs"
-        collections:
-          oneOf:
-            - type: boolean
-            - $ref: "#/components/schemas/CollectionFindManyArgs"
         _count:
           oneOf:
             - type: boolean
@@ -7988,11 +6260,6 @@ components:
       properties:
         phrases:
           type: boolean
-    CollectionCountOutputTypeSelect:
-      type: object
-      properties:
-        articles:
-          type: boolean
     UserCountOutputTypeSelect:
       type: object
       properties:
@@ -8000,18 +6267,11 @@ components:
           type: boolean
         sessions:
           type: boolean
-        collections:
-          type: boolean
     ArticleCountOutputTypeArgs:
       type: object
       properties:
         select:
           $ref: "#/components/schemas/ArticleCountOutputTypeSelect"
-    CollectionCountOutputTypeArgs:
-      type: object
-      properties:
-        select:
-          $ref: "#/components/schemas/CollectionCountOutputTypeSelect"
     UserCountOutputTypeArgs:
       type: object
       properties:
@@ -8059,6 +6319,8 @@ components:
           type: boolean
         updatedAt:
           type: boolean
+        createdById:
+          type: boolean
     ArticleSelect:
       type: object
       properties:
@@ -8076,43 +6338,12 @@ components:
           type: boolean
         updatedAt:
           type: boolean
-        collection:
-          oneOf:
-            - type: boolean
-            - $ref: "#/components/schemas/CollectionArgs"
-        collectionId:
-          type: boolean
-        _count:
-          oneOf:
-            - type: boolean
-            - $ref: "#/components/schemas/ArticleCountOutputTypeArgs"
-    CollectionSelect:
-      type: object
-      properties:
-        id:
-          type: boolean
-        name:
-          type: boolean
-        externalLink:
-          type: boolean
-        createdAt:
-          type: boolean
-        updatedAt:
-          type: boolean
-        articles:
-          oneOf:
-            - type: boolean
-            - $ref: "#/components/schemas/ArticleFindManyArgs"
-        createdBy:
-          oneOf:
-            - type: boolean
-            - $ref: "#/components/schemas/UserArgs"
         createdById:
           type: boolean
         _count:
           oneOf:
             - type: boolean
-            - $ref: "#/components/schemas/CollectionCountOutputTypeArgs"
+            - $ref: "#/components/schemas/ArticleCountOutputTypeArgs"
     ConversationSelect:
       type: object
       properties:
@@ -8199,10 +6430,6 @@ components:
           oneOf:
             - type: boolean
             - $ref: "#/components/schemas/SessionFindManyArgs"
-        collections:
-          oneOf:
-            - type: boolean
-            - $ref: "#/components/schemas/CollectionFindManyArgs"
         _count:
           oneOf:
             - type: boolean
@@ -8288,6 +6515,8 @@ components:
           type: boolean
         updatedAt:
           type: boolean
+        createdById:
+          type: boolean
         _all:
           type: boolean
     PhraseMinAggregateInput:
@@ -8311,6 +6540,8 @@ components:
           type: boolean
         updatedAt:
           type: boolean
+        createdById:
+          type: boolean
     PhraseMaxAggregateInput:
       type: object
       properties:
@@ -8332,6 +6563,8 @@ components:
           type: boolean
         updatedAt:
           type: boolean
+        createdById:
+          type: boolean
     ArticleCountAggregateInput:
       type: object
       properties:
@@ -8345,7 +6578,7 @@ components:
           type: boolean
         updatedAt:
           type: boolean
-        collectionId:
+        createdById:
           type: boolean
         _all:
           type: boolean
@@ -8362,56 +6595,9 @@ components:
           type: boolean
         updatedAt:
           type: boolean
-        collectionId:
+        createdById:
           type: boolean
     ArticleMaxAggregateInput:
-      type: object
-      properties:
-        id:
-          type: boolean
-        name:
-          type: boolean
-        externalLink:
-          type: boolean
-        createdAt:
-          type: boolean
-        updatedAt:
-          type: boolean
-        collectionId:
-          type: boolean
-    CollectionCountAggregateInput:
-      type: object
-      properties:
-        id:
-          type: boolean
-        name:
-          type: boolean
-        externalLink:
-          type: boolean
-        createdAt:
-          type: boolean
-        updatedAt:
-          type: boolean
-        createdById:
-          type: boolean
-        _all:
-          type: boolean
-    CollectionMinAggregateInput:
-      type: object
-      properties:
-        id:
-          type: boolean
-        name:
-          type: boolean
-        externalLink:
-          type: boolean
-        createdAt:
-          type: boolean
-        updatedAt:
-          type: boolean
-        createdById:
-          type: boolean
-    CollectionMaxAggregateInput:
       type: object
       properties:
         id:
@@ -8785,6 +6971,8 @@ components:
         updatedAt:
           type: string
           format: date-time
+        createdById:
+          type: string
         _count:
           oneOf:
             - type: "null"
@@ -8803,6 +6991,7 @@ components:
         - articleId
         - createdAt
         - updatedAt
+        - createdById
     AggregateArticle:
       type: object
       properties:
@@ -8835,7 +7024,7 @@ components:
         updatedAt:
           type: string
           format: date-time
-        collectionId:
+        createdById:
           type: string
         _count:
           oneOf:
@@ -8849,58 +7038,6 @@ components:
           oneOf:
             - type: "null"
             - $ref: "#/components/schemas/ArticleMaxAggregateOutputType"
-      required:
-        - id
-        - name
-        - createdAt
-        - updatedAt
-        - collectionId
-    AggregateCollection:
-      type: object
-      properties:
-        _count:
-          oneOf:
-            - type: "null"
-            - $ref: "#/components/schemas/CollectionCountAggregateOutputType"
-        _min:
-          oneOf:
-            - type: "null"
-            - $ref: "#/components/schemas/CollectionMinAggregateOutputType"
-        _max:
-          oneOf:
-            - type: "null"
-            - $ref: "#/components/schemas/CollectionMaxAggregateOutputType"
-    CollectionGroupByOutputType:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        externalLink:
-          oneOf:
-            - type: "null"
-            - type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        createdById:
-          type: string
-        _count:
-          oneOf:
-            - type: "null"
-            - $ref: "#/components/schemas/CollectionCountAggregateOutputType"
-        _min:
-          oneOf:
-            - type: "null"
-            - $ref: "#/components/schemas/CollectionMinAggregateOutputType"
-        _max:
-          oneOf:
-            - type: "null"
-            - $ref: "#/components/schemas/CollectionMaxAggregateOutputType"
       required:
         - id
         - name
@@ -9292,6 +7429,8 @@ components:
           type: integer
         updatedAt:
           type: integer
+        createdById:
+          type: integer
         _all:
           type: integer
       required:
@@ -9304,6 +7443,7 @@ components:
         - conversationId
         - createdAt
         - updatedAt
+        - createdById
         - _all
     PhraseMinAggregateOutputType:
       type: object
@@ -9346,6 +7486,10 @@ components:
             - type: "null"
             - type: string
               format: date-time
+        createdById:
+          oneOf:
+            - type: "null"
+            - type: string
     PhraseMaxAggregateOutputType:
       type: object
       properties:
@@ -9387,6 +7531,10 @@ components:
             - type: "null"
             - type: string
               format: date-time
+        createdById:
+          oneOf:
+            - type: "null"
+            - type: string
     ArticleCountAggregateOutputType:
       type: object
       properties:
@@ -9400,7 +7548,7 @@ components:
           type: integer
         updatedAt:
           type: integer
-        collectionId:
+        createdById:
           type: integer
         _all:
           type: integer
@@ -9410,7 +7558,7 @@ components:
         - externalLink
         - createdAt
         - updatedAt
-        - collectionId
+        - createdById
         - _all
     ArticleMinAggregateOutputType:
       type: object
@@ -9437,94 +7585,11 @@ components:
             - type: "null"
             - type: string
               format: date-time
-        collectionId:
+        createdById:
           oneOf:
             - type: "null"
             - type: string
     ArticleMaxAggregateOutputType:
-      type: object
-      properties:
-        id:
-          oneOf:
-            - type: "null"
-            - type: string
-        name:
-          oneOf:
-            - type: "null"
-            - type: string
-        externalLink:
-          oneOf:
-            - type: "null"
-            - type: string
-        createdAt:
-          oneOf:
-            - type: "null"
-            - type: string
-              format: date-time
-        updatedAt:
-          oneOf:
-            - type: "null"
-            - type: string
-              format: date-time
-        collectionId:
-          oneOf:
-            - type: "null"
-            - type: string
-    CollectionCountAggregateOutputType:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: integer
-        externalLink:
-          type: integer
-        createdAt:
-          type: integer
-        updatedAt:
-          type: integer
-        createdById:
-          type: integer
-        _all:
-          type: integer
-      required:
-        - id
-        - name
-        - externalLink
-        - createdAt
-        - updatedAt
-        - createdById
-        - _all
-    CollectionMinAggregateOutputType:
-      type: object
-      properties:
-        id:
-          oneOf:
-            - type: "null"
-            - type: string
-        name:
-          oneOf:
-            - type: "null"
-            - type: string
-        externalLink:
-          oneOf:
-            - type: "null"
-            - type: string
-        createdAt:
-          oneOf:
-            - type: "null"
-            - type: string
-              format: date-time
-        updatedAt:
-          oneOf:
-            - type: "null"
-            - type: string
-              format: date-time
-        createdById:
-          oneOf:
-            - type: "null"
-            - type: string
-    CollectionMaxAggregateOutputType:
       type: object
       properties:
         id:
@@ -10579,194 +8644,6 @@ components:
           $ref: "#/components/schemas/ArticleMinAggregateInput"
         _max:
           $ref: "#/components/schemas/ArticleMaxAggregateInput"
-        meta:
-          $ref: "#/components/schemas/_Meta"
-    CollectionCreateArgs:
-      type: object
-      required:
-        - data
-      properties:
-        select:
-          $ref: "#/components/schemas/CollectionSelect"
-        include:
-          $ref: "#/components/schemas/CollectionInclude"
-        data:
-          $ref: "#/components/schemas/CollectionCreateInput"
-        meta:
-          $ref: "#/components/schemas/_Meta"
-    CollectionCreateManyArgs:
-      type: object
-      required:
-        - data
-      properties:
-        data:
-          oneOf:
-            - $ref: "#/components/schemas/CollectionCreateManyInput"
-            - type: array
-              items:
-                $ref: "#/components/schemas/CollectionCreateManyInput"
-        skipDuplicates:
-          type: boolean
-          description: Do not insert records with unique fields or ID fields that already
-            exist.
-        meta:
-          $ref: "#/components/schemas/_Meta"
-    CollectionFindUniqueArgs:
-      type: object
-      required:
-        - where
-      properties:
-        select:
-          $ref: "#/components/schemas/CollectionSelect"
-        include:
-          $ref: "#/components/schemas/CollectionInclude"
-        where:
-          $ref: "#/components/schemas/CollectionWhereUniqueInput"
-        meta:
-          $ref: "#/components/schemas/_Meta"
-    CollectionFindFirstArgs:
-      type: object
-      properties:
-        select:
-          $ref: "#/components/schemas/CollectionSelect"
-        include:
-          $ref: "#/components/schemas/CollectionInclude"
-        where:
-          $ref: "#/components/schemas/CollectionWhereInput"
-        meta:
-          $ref: "#/components/schemas/_Meta"
-    CollectionFindManyArgs:
-      type: object
-      properties:
-        select:
-          $ref: "#/components/schemas/CollectionSelect"
-        include:
-          $ref: "#/components/schemas/CollectionInclude"
-        where:
-          $ref: "#/components/schemas/CollectionWhereInput"
-        meta:
-          $ref: "#/components/schemas/_Meta"
-    CollectionUpdateArgs:
-      type: object
-      required:
-        - where
-        - data
-      properties:
-        select:
-          $ref: "#/components/schemas/CollectionSelect"
-        include:
-          $ref: "#/components/schemas/CollectionInclude"
-        where:
-          $ref: "#/components/schemas/CollectionWhereUniqueInput"
-        data:
-          $ref: "#/components/schemas/CollectionUpdateInput"
-        meta:
-          $ref: "#/components/schemas/_Meta"
-    CollectionUpdateManyArgs:
-      type: object
-      required:
-        - data
-      properties:
-        where:
-          $ref: "#/components/schemas/CollectionWhereInput"
-        data:
-          $ref: "#/components/schemas/CollectionUpdateManyMutationInput"
-        meta:
-          $ref: "#/components/schemas/_Meta"
-    CollectionUpsertArgs:
-      type: object
-      required:
-        - create
-        - update
-        - where
-      properties:
-        select:
-          $ref: "#/components/schemas/CollectionSelect"
-        include:
-          $ref: "#/components/schemas/CollectionInclude"
-        where:
-          $ref: "#/components/schemas/CollectionWhereUniqueInput"
-        create:
-          $ref: "#/components/schemas/CollectionCreateInput"
-        update:
-          $ref: "#/components/schemas/CollectionUpdateInput"
-        meta:
-          $ref: "#/components/schemas/_Meta"
-    CollectionDeleteUniqueArgs:
-      type: object
-      required:
-        - where
-      properties:
-        select:
-          $ref: "#/components/schemas/CollectionSelect"
-        include:
-          $ref: "#/components/schemas/CollectionInclude"
-        where:
-          $ref: "#/components/schemas/CollectionWhereUniqueInput"
-        meta:
-          $ref: "#/components/schemas/_Meta"
-    CollectionDeleteManyArgs:
-      type: object
-      properties:
-        where:
-          $ref: "#/components/schemas/CollectionWhereInput"
-        meta:
-          $ref: "#/components/schemas/_Meta"
-    CollectionCountArgs:
-      type: object
-      properties:
-        select:
-          $ref: "#/components/schemas/CollectionSelect"
-        where:
-          $ref: "#/components/schemas/CollectionWhereInput"
-        meta:
-          $ref: "#/components/schemas/_Meta"
-    CollectionAggregateArgs:
-      type: object
-      properties:
-        where:
-          $ref: "#/components/schemas/CollectionWhereInput"
-        orderBy:
-          $ref: "#/components/schemas/CollectionOrderByWithRelationInput"
-        cursor:
-          $ref: "#/components/schemas/CollectionWhereUniqueInput"
-        take:
-          type: integer
-        skip:
-          type: integer
-        _count:
-          oneOf:
-            - type: boolean
-            - $ref: "#/components/schemas/CollectionCountAggregateInput"
-        _min:
-          $ref: "#/components/schemas/CollectionMinAggregateInput"
-        _max:
-          $ref: "#/components/schemas/CollectionMaxAggregateInput"
-        meta:
-          $ref: "#/components/schemas/_Meta"
-    CollectionGroupByArgs:
-      type: object
-      properties:
-        where:
-          $ref: "#/components/schemas/CollectionWhereInput"
-        orderBy:
-          $ref: "#/components/schemas/CollectionOrderByWithRelationInput"
-        by:
-          $ref: "#/components/schemas/CollectionScalarFieldEnum"
-        having:
-          $ref: "#/components/schemas/CollectionScalarWhereWithAggregatesInput"
-        take:
-          type: integer
-        skip:
-          type: integer
-        _count:
-          oneOf:
-            - type: boolean
-            - $ref: "#/components/schemas/CollectionCountAggregateInput"
-        _min:
-          $ref: "#/components/schemas/CollectionMinAggregateInput"
-        _max:
-          $ref: "#/components/schemas/CollectionMaxAggregateInput"
         meta:
           $ref: "#/components/schemas/_Meta"
     ConversationCreateArgs:
@@ -13711,677 +11588,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ArticleGroupByArgs"
-        - name: meta
-          in: query
-          description: Superjson serialization metadata for parameter "q"
-          content:
-            application/json:
-              schema: {}
-  /api/model/collection/create:
-    post:
-      operationId: createCollection
-      description: Create a new Collection
-      tags:
-        - collection
-      responses:
-        "201":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - data
-                properties:
-                  data:
-                    $ref: "#/components/schemas/Collection"
-                    description: The Prisma response data serialized with superjson
-                  meta:
-                    $ref: "#/components/schemas/_Meta"
-                    description: The superjson serialization metadata for the "data" field
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Invalid request
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is forbidden
-        "422":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is unprocessable due to validation errors
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CollectionCreateArgs"
-  /api/model/collection/createMany:
-    post:
-      operationId: createManyCollection
-      description: Create several Collection
-      tags:
-        - collection
-      responses:
-        "201":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - data
-                properties:
-                  data:
-                    $ref: "#/components/schemas/BatchPayload"
-                    description: The Prisma response data serialized with superjson
-                  meta:
-                    $ref: "#/components/schemas/_Meta"
-                    description: The superjson serialization metadata for the "data" field
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Invalid request
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is forbidden
-        "422":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is unprocessable due to validation errors
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CollectionCreateManyArgs"
-  /api/model/collection/findUnique:
-    get:
-      operationId: findUniqueCollection
-      description: Find one unique Collection
-      tags:
-        - collection
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - data
-                properties:
-                  data:
-                    $ref: "#/components/schemas/Collection"
-                    description: The Prisma response data serialized with superjson
-                  meta:
-                    $ref: "#/components/schemas/_Meta"
-                    description: The superjson serialization metadata for the "data" field
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Invalid request
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is forbidden
-        "422":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is unprocessable due to validation errors
-      parameters:
-        - name: q
-          in: query
-          required: true
-          description: Superjson-serialized Prisma query object
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CollectionFindUniqueArgs"
-        - name: meta
-          in: query
-          description: Superjson serialization metadata for parameter "q"
-          content:
-            application/json:
-              schema: {}
-  /api/model/collection/findFirst:
-    get:
-      operationId: findFirstCollection
-      description: Find the first Collection matching the given condition
-      tags:
-        - collection
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - data
-                properties:
-                  data:
-                    $ref: "#/components/schemas/Collection"
-                    description: The Prisma response data serialized with superjson
-                  meta:
-                    $ref: "#/components/schemas/_Meta"
-                    description: The superjson serialization metadata for the "data" field
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Invalid request
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is forbidden
-        "422":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is unprocessable due to validation errors
-      parameters:
-        - name: q
-          in: query
-          required: true
-          description: Superjson-serialized Prisma query object
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CollectionFindFirstArgs"
-        - name: meta
-          in: query
-          description: Superjson serialization metadata for parameter "q"
-          content:
-            application/json:
-              schema: {}
-  /api/model/collection/findMany:
-    get:
-      operationId: findManyCollection
-      description: Find a list of Collection
-      tags:
-        - collection
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - data
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Collection"
-                    description: The Prisma response data serialized with superjson
-                  meta:
-                    $ref: "#/components/schemas/_Meta"
-                    description: The superjson serialization metadata for the "data" field
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Invalid request
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is forbidden
-        "422":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is unprocessable due to validation errors
-      parameters:
-        - name: q
-          in: query
-          required: true
-          description: Superjson-serialized Prisma query object
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CollectionFindManyArgs"
-        - name: meta
-          in: query
-          description: Superjson serialization metadata for parameter "q"
-          content:
-            application/json:
-              schema: {}
-  /api/model/collection/update:
-    patch:
-      operationId: updateCollection
-      description: Update a Collection
-      tags:
-        - collection
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - data
-                properties:
-                  data:
-                    $ref: "#/components/schemas/Collection"
-                    description: The Prisma response data serialized with superjson
-                  meta:
-                    $ref: "#/components/schemas/_Meta"
-                    description: The superjson serialization metadata for the "data" field
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Invalid request
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is forbidden
-        "422":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is unprocessable due to validation errors
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CollectionUpdateArgs"
-  /api/model/collection/updateMany:
-    patch:
-      operationId: updateManyCollection
-      description: Update Collections matching the given condition
-      tags:
-        - collection
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - data
-                properties:
-                  data:
-                    $ref: "#/components/schemas/BatchPayload"
-                    description: The Prisma response data serialized with superjson
-                  meta:
-                    $ref: "#/components/schemas/_Meta"
-                    description: The superjson serialization metadata for the "data" field
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Invalid request
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is forbidden
-        "422":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is unprocessable due to validation errors
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CollectionUpdateManyArgs"
-  /api/model/collection/upsert:
-    post:
-      operationId: upsertCollection
-      description: Upsert a Collection
-      tags:
-        - collection
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - data
-                properties:
-                  data:
-                    $ref: "#/components/schemas/Collection"
-                    description: The Prisma response data serialized with superjson
-                  meta:
-                    $ref: "#/components/schemas/_Meta"
-                    description: The superjson serialization metadata for the "data" field
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Invalid request
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is forbidden
-        "422":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is unprocessable due to validation errors
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CollectionUpsertArgs"
-  /api/model/collection/delete:
-    delete:
-      operationId: deleteCollection
-      description: Delete one unique Collection
-      tags:
-        - collection
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - data
-                properties:
-                  data:
-                    $ref: "#/components/schemas/Collection"
-                    description: The Prisma response data serialized with superjson
-                  meta:
-                    $ref: "#/components/schemas/_Meta"
-                    description: The superjson serialization metadata for the "data" field
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Invalid request
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is forbidden
-        "422":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is unprocessable due to validation errors
-      parameters:
-        - name: q
-          in: query
-          required: true
-          description: Superjson-serialized Prisma query object
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CollectionDeleteUniqueArgs"
-        - name: meta
-          in: query
-          description: Superjson serialization metadata for parameter "q"
-          content:
-            application/json:
-              schema: {}
-  /api/model/collection/deleteMany:
-    delete:
-      operationId: deleteManyCollection
-      description: Delete Collections matching the given condition
-      tags:
-        - collection
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - data
-                properties:
-                  data:
-                    $ref: "#/components/schemas/BatchPayload"
-                    description: The Prisma response data serialized with superjson
-                  meta:
-                    $ref: "#/components/schemas/_Meta"
-                    description: The superjson serialization metadata for the "data" field
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Invalid request
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is forbidden
-        "422":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is unprocessable due to validation errors
-      parameters:
-        - name: q
-          in: query
-          required: true
-          description: Superjson-serialized Prisma query object
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CollectionDeleteManyArgs"
-        - name: meta
-          in: query
-          description: Superjson serialization metadata for parameter "q"
-          content:
-            application/json:
-              schema: {}
-  /api/model/collection/count:
-    get:
-      operationId: countCollection
-      description: Find a list of Collection
-      tags:
-        - collection
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - data
-                properties:
-                  data:
-                    oneOf:
-                      - type: integer
-                      - $ref: "#/components/schemas/CollectionCountAggregateOutputType"
-                    description: The Prisma response data serialized with superjson
-                  meta:
-                    $ref: "#/components/schemas/_Meta"
-                    description: The superjson serialization metadata for the "data" field
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Invalid request
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is forbidden
-        "422":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is unprocessable due to validation errors
-      parameters:
-        - name: q
-          in: query
-          required: true
-          description: Superjson-serialized Prisma query object
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CollectionCountArgs"
-        - name: meta
-          in: query
-          description: Superjson serialization metadata for parameter "q"
-          content:
-            application/json:
-              schema: {}
-  /api/model/collection/aggregate:
-    get:
-      operationId: aggregateCollection
-      description: Aggregate Collections
-      tags:
-        - collection
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - data
-                properties:
-                  data:
-                    $ref: "#/components/schemas/AggregateCollection"
-                    description: The Prisma response data serialized with superjson
-                  meta:
-                    $ref: "#/components/schemas/_Meta"
-                    description: The superjson serialization metadata for the "data" field
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Invalid request
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is forbidden
-        "422":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is unprocessable due to validation errors
-      parameters:
-        - name: q
-          in: query
-          required: true
-          description: Superjson-serialized Prisma query object
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CollectionAggregateArgs"
-        - name: meta
-          in: query
-          description: Superjson serialization metadata for parameter "q"
-          content:
-            application/json:
-              schema: {}
-  /api/model/collection/groupBy:
-    get:
-      operationId: groupByCollection
-      description: Group Collections by fields
-      tags:
-        - collection
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - data
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/CollectionGroupByOutputType"
-                    description: The Prisma response data serialized with superjson
-                  meta:
-                    $ref: "#/components/schemas/_Meta"
-                    description: The superjson serialization metadata for the "data" field
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Invalid request
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is forbidden
-        "422":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_Error"
-          description: Request is unprocessable due to validation errors
-      parameters:
-        - name: q
-          in: query
-          required: true
-          description: Superjson-serialized Prisma query object
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CollectionGroupByArgs"
         - name: meta
           in: query
           description: Superjson serialization metadata for parameter "q"

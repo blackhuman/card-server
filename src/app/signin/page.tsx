@@ -3,27 +3,41 @@
 import type { NextPage } from "next";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 
 const Signin: NextPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  async function onSignin(e: FormEvent) {
+  async function onSignin(e: SubmitEvent) {
     e.preventDefault();
 
     const result = await signIn("credentials", {
+      callbackUrl: 'chrome-extension://hlcdfnkcfhpffaepmcalaagicamakfon/tabs/index.html',
       redirect: false,
       email,
       password,
     });
 
+    console.log('onSignin result', result)
+
     if (result?.ok) {
+      console.log('result.url', result.url)
       router.push("/");
     } else {
       alert("Signin failed");
     }
+  }
+
+  function rawSignIn(e: SubmitEvent) {
+    e.preventDefault()
+    return signIn("credentials", {
+      callbackUrl: 'chrome-extension://hlcdfnkcfhpffaepmcalaagicamakfon/tabs/index.html',
+      redirect: true,
+      email,
+      password,
+    })
   }
 
   return (
@@ -31,7 +45,7 @@ const Signin: NextPage = () => {
       <h1 className="text-5xl font-extrabold text-white">Login</h1>
       <form
         className="mt-16 flex flex-col gap-8 text-2xl"
-        onSubmit={(e) => void onSignin(e)}
+        onSubmit={(e) => void rawSignIn(e)}
       >
         <div>
           <label htmlFor="email" className="inline-block w-32  text-white">

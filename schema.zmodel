@@ -69,6 +69,8 @@ model Phrase {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  createdById String   @default(auth().id)
+
   @@allow('all', check(article, 'read'))
 }
 
@@ -80,26 +82,13 @@ model Article {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  collection Collection @relation(fields: [collectionId], references: [id])
-  collectionId String
-
-  @@allow('all', check(collection, 'read'))
-
-}
-
-model Collection {
-  id        String      @id @default(uuid())
-  name      String
-  externalLink String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  articles Article[]
-
-  createdBy   User     @relation(fields: [createdById], references: [id])
   createdById String   @default(auth().id)
 
-  @@allow('all', auth() == createdBy)
+  // collection Collection @relation(fields: [collectionId], references: [id])
+  // collectionId String
+
+  // @@allow('all', check(collection, 'read'))
+  @@allow('all', auth().id == createdById)
 
 }
 
@@ -151,7 +140,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  collections   Collection[]
+  // collections   Collection[]
 
   @@allow('create,read', true)
 
