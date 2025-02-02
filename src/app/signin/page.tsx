@@ -40,12 +40,16 @@ const Signin: NextPage = () => {
     })
   }
 
+  function signInSSR(e: SubmitEvent) {
+    e.preventDefault()
+  }
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
       <h1 className="text-5xl font-extrabold text-white">Login</h1>
       <form
         className="mt-16 flex flex-col gap-8 text-2xl"
-        onSubmit={(e) => void rawSignIn(e)}
+        onSubmit={(e) => void signInSSR(e)}
       >
         <div>
           <label htmlFor="email" className="inline-block w-32  text-white">
