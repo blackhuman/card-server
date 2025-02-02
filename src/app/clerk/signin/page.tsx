@@ -19,19 +19,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${inter.variable}`}>
-        <ClerkProvider>
-          <header>
-            <SignedOut>
-              <SignInButton />
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </header>
-          <Providers>
-            <main>{children}</main>
-          </Providers>
-        </ClerkProvider>
+        <header>
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </header>
+        <Providers>
+          <main>{children}</main>
+        </Providers>
       </body>
     </html>
   );

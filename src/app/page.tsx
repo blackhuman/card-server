@@ -1,21 +1,25 @@
 "use client";
 
-import { useAuth, useClerk, useUser } from '@clerk/nextjs';
 import type { Phrase } from "@zenstackhq/runtime/models";
 import { type NextPage } from "next";
-import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from 'react';
 import { useCreatePhrase, useDeletePhrase, useFindManyPhrase, useUpdatePhrase, useUpsertArticle } from "~/lib/hooks";
-import { trpc } from "~/server/trpc";
+import { createSupabaseClient } from '~/server/supabase-client';
 
 type AuthUser = { id: string; email?: string | null };
 
+const supabase = createSupabaseClient();
+
 const Welcome = ({ user }: { user: AuthUser }) => {
-  const { signOut } = useClerk();
+  const router = useRouter();
+  
   async function onSignout() {
-    await signOut({ redirectUrl: '/signin' });
+    await supabase.auth.signOut();
+    router.push('/signin');
   }
+  
   return (
     <div className="flex gap-4">
       <h3 className="text-lg">Welcome back, {user?.email}</h3>
@@ -57,8 +61,7 @@ function useFindAllPhrases(userId: string) {
 }
 
 const Phrases = ({ user }: { user: AuthUser }) => {
-  const { userId } = useAuth();
-  if (!userId) return null;
+  const { id: userId } = user;
   // Post crud hooks
   const { mutateAsync: createPhrase } = useCreatePhrase();
   const { mutateAsync: updatePhrase } = useUpdatePhrase();
@@ -84,7 +87,7 @@ const Phrases = ({ user }: { user: AuthUser }) => {
                 id: articleId,
                 externalLink: articleId,
                 name: articleId,
-                createdById: userId!,
+                createdById: userId,
               }
             }
           }, 
@@ -126,15 +129,31 @@ const Phrases = ({ user }: { user: AuthUser }) => {
 };
 
 const Home: NextPage = () => {
-  const userHook = useUser()
-  const { isLoaded, isSignedIn, user } = userHook
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!isLoaded || !isSignedIn) return <p>Loading ...</p>;
+  useEffect(() => {
+    async function getUser() {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+      setLoading(false);
+    }
+    
+    getUser();
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const authUser: AuthUser = {
-    id: user.id,
-    email: user.username!,
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return <SigninSignup />;
   }
 
   return (
@@ -142,18 +161,12 @@ const Home: NextPage = () => {
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 text-white">
         <h1 className="text-5xl font-extrabold">My Awesome Blog</h1>
 
-        {authUser ? (
-          // welcome & blog posts
-          <div className="flex flex-col">
-            <Welcome user={authUser} />
-            <section className="mt-10">
-              <Phrases user={authUser} />
-            </section>
-          </div>
-        ) : (
-          // if not logged in
-          <SigninSignup />
-        )}
+        <div className="flex flex-col">
+          <Welcome user={user} />
+          <section className="mt-10">
+            <Phrases user={user} />
+          </section>
+        </div>
       </div>
     </main>
   );

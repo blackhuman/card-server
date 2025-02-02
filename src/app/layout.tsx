@@ -3,6 +3,7 @@
 import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
+import TrpcProvider from './providers';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -17,7 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${inter.variable}`}>
-        <main>{children}</main>
+        <TrpcProvider>
+          <main>{children}</main>
+        </TrpcProvider>
       </body>
     </html>
   );
