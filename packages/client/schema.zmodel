@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+plugin hooks {
+  provider = '@zenstackhq/tanstack-query'
+  target = 'react'
+  output = "src/hooks"
+  version = 'v4'
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL")
+}
+
+model Card {
+  id        String      @id @default(uuid())
+  text      String
+  textTranslation String?
+  sentence String?
+  sentenceTranslation String?
+  article Article? @relation(fields: [articleId], references: [id])
+  articleId String
+  conversation Conversation? @relation(fields: [conversationId], references: [id])
+  conversationId String? @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdById String @default(auth().id)
+
+  @@allow('create,update,delete', auth() != null && auth().id == createdById)
+  @@allow('read', true)
+}
+
+model Article {
+  id        String      @id  @default(uuid())
+  name     String
+  externalLink String?
+  cards  Card[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdById String @default(auth().id)
+
+  @@allow('create,update,delete', auth() != null && auth().id == createdById)
+  @@allow('read', true)
+}
+
+model Conversation {
+  id        String      @id @default(uuid())
+  messages     String
+  card Card?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@allow('read', true)
+  @@allow('create,update,delete', auth() != null)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  password      String    @password @omit
+  image         String?
+
+  @@allow('create,read', true)
+  @@allow('update,delete', auth() != null && auth().id == id)
+}

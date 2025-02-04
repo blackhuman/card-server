@@ -1,7 +1,5 @@
-import { auth } from '@clerk/nextjs/server';
-import { enhance } from "@zenstackhq/runtime";
 import { NextRequestHandler } from "@zenstackhq/server/next";
-import { getPrisma } from '~/server/db';
+import { getPrisma } from "~/server/db";
 
 const handler = NextRequestHandler({ getPrisma, useAppDir: true });
 

@@ -1,11 +1,14 @@
 "use client";
 
-import type { Phrase } from "@zenstackhq/runtime/models";
 import { type NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from 'react';
-import { useCreatePhrase, useDeletePhrase, useFindManyPhrase, useUpdatePhrase, useUpsertArticle } from "~/lib/hooks";
+import { 
+  useCreateCard, useDeleteCard, useFindManyCard, useUpdateCard, 
+  useUpsertArticle
+} from "@card-server/client";
+import {Card} from '@prisma/client'
 import { createSupabaseClient } from '~/server/supabase-client';
 
 type AuthUser = { id: string; email?: string | null };
@@ -53,71 +56,58 @@ function useFindAllPhrases(userId: string) {
   //   orderBy: { createdAt: "desc" },
   // })
   // return collections.flatMap(v => v.articles).flatMap(v => v.phrases)
-  const { data = [] } = useFindManyPhrase({
+  const { data = [] } = useFindManyCard({
     where: { createdById: userId },
     orderBy: { createdAt: "desc" },
   })
   return data
 }
 
-const Phrases = ({ user }: { user: AuthUser }) => {
+const Cards = ({ user }: { user: AuthUser }) => {
   const { id: userId } = user;
   // Post crud hooks
-  const { mutateAsync: createPhrase } = useCreatePhrase();
-  const { mutateAsync: updatePhrase } = useUpdatePhrase();
-  const { mutateAsync: deletePhrase } = useDeletePhrase();
+  const { mutateAsync: createCard } = useCreateCard();
+  const { mutateAsync: updateCard } = useUpdateCard();
+  const { mutateAsync: deleteCard } = useDeleteCard();
   const { mutateAsync: upsertArticle } = useUpsertArticle();
 
-  const phrases = useFindAllPhrases(userId)
+  const { data: cards} = useFindManyCard()
 
-  async function onCreatePhrase() {
+  async function onCreateCard() {
     const articleId = 'http://127.0.0.1/resource/1'
 
     const text = prompt("Enter post name");
     if (text) {
-      const ab = await createPhrase({ 
+      const ab = await createCard({ 
         data: { 
           text, 
-          article: {
-            connectOrCreate: {
-              where: {
-                id: articleId
-              },
-              create: {
-                id: articleId,
-                externalLink: articleId,
-                name: articleId,
-                createdById: userId,
-              }
-            }
-          }, 
         } 
       });
     }
   }
 
-  async function onDelete(phrase: Phrase) {
-    await deletePhrase({ where: { id: phrase.id } });
+  async function onDelete(card: Card) {
+    await deleteCard({ where: { id: card.id } });
   }
 
   return (
     <div className="container flex flex-col text-white">
       <button
         className="rounded border border-white p-2 text-lg"
-        onClick={() => void onCreatePhrase()}
+        onClick={() => void onCreateCard()}
       >
-        + Create Phrase
+        + Create Card
       </button>
 
       <ul className="container mt-8 flex flex-col gap-2">
-        {phrases?.map((phrase) => (
-          <li key={phrase.id} className="flex items-end justify-between gap-4">
+        {cards?.map((card) => (
+          <li key={card.id} className="flex items-end justify-between gap-4">
             <p className={`text-2xl`}>
-              {phrase.text}
-              <span className="text-lg"> by {phrase.createdById}</span>
+              {card.text}
+              <span className="text-lg"> by {card.createdById}</span>
             </p>
             <div className="flex w-32 justify-end gap-1 text-left">
-              <button className="underline" onClick={() => void onDelete(phrase)}>
+              <button className="underline" onClick={() => void onDelete(card)}>
                 Delete
               </button>
             </div>
@@ -164,7 +154,7 @@ const Home: NextPage = () => {
         <div className="flex flex-col">
           <Welcome user={user} />
           <section className="mt-10">
-            <Phrases user={user} />
+            <Cards user={user} />
           </section>
         </div>
       </div>

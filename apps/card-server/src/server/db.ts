@@ -1,6 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import { GetServerSidePropsContext } from "next";
-
 import { env } from "~/env";
 import { enhance } from "@zenstackhq/runtime";
 import { createClient } from './supabase-server';

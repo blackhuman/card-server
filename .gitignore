@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules/
 /.pnp
 .pnp.js
 
@@ -12,12 +12,11 @@
 /prisma/
 
 # next.js
-/.next/
-/out/
+.next/
 next-env.d.ts
 
 # production
-/build
+dist/
 
 # misc
 .DS_Store
@@ -42,6 +41,5 @@ yarn-error.log*
 
 # idea files
 .idea
-src/lib/hooks/
-src/server/routers/generated/
+packages/client/src/hooks/
 .zenstack_repl_history
