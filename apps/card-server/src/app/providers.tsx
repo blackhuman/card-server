@@ -10,11 +10,8 @@ const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 5 * 1000 } },
 });
 
-export default function Providers({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Providers(props: React.PropsWithChildren) {
+  const { children } = props;
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [

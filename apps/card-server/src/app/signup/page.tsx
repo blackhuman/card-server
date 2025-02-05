@@ -4,7 +4,7 @@ import type { NextPage } from "next";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
-import { useCreateUser } from "~/lib/hooks";
+import { useCreateUser } from "@card-server/client";
 
 const Signup: NextPage = () => {
   const [email, setEmail] = useState("");

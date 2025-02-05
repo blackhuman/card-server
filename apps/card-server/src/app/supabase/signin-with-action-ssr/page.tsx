@@ -4,9 +4,9 @@ import { useRouter } from 'next/router'
 import { FormEvent} from 'react'
 import { createClient } from '~/server/supabase-server'
 
-const supabase = createClient()
-
 export default async function SignIn() {
+  const supabase = await createClient()
+  const cookieStore = await cookies()
   const signIn = async (form: FormData) => {
     'use server'
     console.log('form', form)
@@ -24,7 +24,6 @@ export default async function SignIn() {
       // const cookieStore = cookies()
       // cookieStore.set('supabase-auth-token2', session?.access_token || '')
     } else {
-      const cookieStore = cookies()
       console.log('already signed in, cookies ', cookieStore.getAll())
     }
     revalidatePath('/')
@@ -37,7 +36,6 @@ export default async function SignIn() {
   }
 
   console.log('session', !session)
-  const cookieStore = cookies()
   console.log('already signed in2, cookies', cookieStore.getAll())
 
   if (session === null) {

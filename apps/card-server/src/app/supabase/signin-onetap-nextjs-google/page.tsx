@@ -85,6 +85,7 @@ const OneTapComponent = () => {
   }, [])
 
   useEffect(() => {
+    // @ts-ignore
     globalThis.handleSignInWithGoogle = async (response: CredentialResponse) => {
       console.log('Google One Tap response2: ', response)
       // send id token returned in response.credential to supabase
