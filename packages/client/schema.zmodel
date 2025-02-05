@@ -5,7 +5,6 @@ plugin hooks {
   provider = '@zenstackhq/tanstack-query'
   target = 'react'
   output = "src/hooks"
-  version = 'v4'
 }
 
 generator client {
@@ -24,12 +23,12 @@ model Card {
   sentence String?
   sentenceTranslation String?
   article Article? @relation(fields: [articleId], references: [id])
-  articleId String
+  articleId String?
   conversation Conversation? @relation(fields: [conversationId], references: [id])
   conversationId String? @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  createdById String @default(auth().id)
+  createdById String? @default(auth().id)
 
   @@allow('create,update,delete', auth() != null && auth().id == createdById)
   @@allow('read', true)

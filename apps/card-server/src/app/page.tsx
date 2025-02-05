@@ -6,9 +6,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from 'react';
 import { 
   useCreateCard, useDeleteCard, useFindManyCard, useUpdateCard, 
-  useUpsertArticle
+  useUpsertArticle,
+  Card
 } from "@card-server/client";
-import {Card} from '@prisma/client'
 import { createSupabaseClient } from '~/server/supabase-client';
 
 type AuthUser = { id: string; email?: string | null };

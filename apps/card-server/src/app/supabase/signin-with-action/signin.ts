@@ -5,7 +5,7 @@ import { createClient } from "~/server/supabase-server";
 
 export async function signin(credentials: SignInWithPasswordCredentials) {
     console.log('credentials', credentials)
-    const supabase = createClient()
+    const supabase = await createClient()
     return await supabase.auth.signInWithPassword(credentials)
 
 }

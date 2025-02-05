@@ -24,7 +24,7 @@ export async function getPrisma() {
   // const session = await getServerAuthSession();
   // console.log('session', session?.user)
   // return enhance(db, { user: session?.user });
-  const supabase = createClient();
+  const supabase = await createClient();
   const authObject = await supabase.auth.getUser();
   console.log('authObject', authObject)
   const userId = authObject.data.user?.id;

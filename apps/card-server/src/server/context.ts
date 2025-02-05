@@ -12,7 +12,7 @@ export const createInnerTRPCContext = async (opts: CreateContextOptions) => {
   // const prisma = enhance(db, {
   //   user: session?.user?.id ? session?.user : undefined,
   // });
-  const supabase = createClient();
+  const supabase = await createClient();
   const response = await supabase?.auth.getUser();
   const user = response?.data.user ?? null;
   console.log('user', user)

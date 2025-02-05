@@ -1,0 +1,31 @@
+@tanstack/react-query@4.36.1 peer
+node_modules/@tanstack/react-query
+  peer @tanstack/react-query@"^4.18.0" from @trpc/react-query@10.45.2
+  node_modules/@trpc/react-query
+    peer @trpc/react-query@"10.45.2" from @trpc/next@10.45.2
+    node_modules/@trpc/next
+      @trpc/next@"^10.45.2" from card-server@0.1.0
+      apps/card-server
+        card-server@0.1.0
+        node_modules/card-server
+          workspace apps/card-server from the root project
+    @trpc/react-query@"^10.45.2" from card-server@0.1.0
+    apps/card-server
+      card-server@0.1.0
+      node_modules/card-server
+        workspace apps/card-server from the root project
+  peer @tanstack/react-query@"^4.18.0" from @trpc/next@10.45.2
+  node_modules/@trpc/next
+    @trpc/next@"^10.45.2" from card-server@0.1.0
+    apps/card-server
+      card-server@0.1.0
+      node_modules/card-server
+        workspace apps/card-server from the root project
+
+@tanstack/react-query@5.66.0
+apps/card-server/node_modules/@tanstack/react-query
+  @tanstack/react-query@"^5.66.0" from card-server@0.1.0
+  apps/card-server
+    card-server@0.1.0
+    node_modules/card-server
+      workspace apps/card-server from the root project
