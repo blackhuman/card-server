@@ -8,7 +8,7 @@ import {
   useCreateCard, useDeleteCard, useFindManyCard, useUpdateCard, 
   useUpsertArticle,
   Card
-} from "@card-server/client";
+} from "@relba/card-client";
 import { createSupabaseClient } from '~/server/supabase-client';
 
 type AuthUser = { id: string; email?: string | null };
