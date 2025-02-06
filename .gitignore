@@ -43,3 +43,4 @@ yarn-error.log*
 .idea
 packages/client/src/hooks/
 .zenstack_repl_history
+.turbo/
