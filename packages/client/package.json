@@ -1,5 +1,5 @@
 {
-  "name": "@card-server/client",
+  "name": "@relba/card-client",
   "version": "0.1.0",
   "private": true,
   "type": "module",
