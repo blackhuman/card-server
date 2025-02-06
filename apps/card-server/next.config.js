@@ -1,3 +1,5 @@
+import path from "path";
+
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
  * for Docker builds.
@@ -10,6 +12,7 @@ const config = {
     urlImports: ['https://accounts.google.com/gsi/client'],
   },
   transpilePackages: ['@relba/card-client'],
+  outputFileTracingRoot: path.join(__dirname, '../../')
 };
 
 export default config;
