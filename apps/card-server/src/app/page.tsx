@@ -7,9 +7,9 @@ import { useEffect, useState } from 'react';
 import { 
   useCreateCard, useDeleteCard, useFindManyCard, useUpdateCard, 
   useUpsertArticle,
-  Card
-} from "@relba/card-client";
+} from "~/zenstack-client";
 import { createSupabaseClient } from '~/server/supabase-client';
+import { Card } from '@zenstackhq/runtime/models';
 
 type AuthUser = { id: string; email?: string | null };
 
@@ -71,7 +71,7 @@ const Cards = ({ user }: { user: AuthUser }) => {
   const { mutateAsync: deleteCard } = useDeleteCard();
   const { mutateAsync: upsertArticle } = useUpsertArticle();
 
-  const { data: cards} = useFindManyCard()
+  const { data: cards} = useFindManyCard({ where: { createdById: userId} })
 
   async function onCreateCard() {
     const articleId = 'http://127.0.0.1/resource/1'

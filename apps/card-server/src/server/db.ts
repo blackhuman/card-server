@@ -26,8 +26,9 @@ export async function getPrisma() {
   // return enhance(db, { user: session?.user });
   const supabase = await createClient();
   const authObject = await supabase.auth.getUser();
-  console.log('authObject', authObject)
+  // console.log('authObject', authObject)
   const userId = authObject.data.user?.id;
+  // if (!userId) throw new Error('User not found');
   return enhance(db, {
     user: authObject ? { id: userId! } : undefined,
   });

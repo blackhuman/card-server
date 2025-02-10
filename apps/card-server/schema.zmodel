@@ -4,7 +4,12 @@
 plugin hooks {
   provider = '@zenstackhq/tanstack-query'
   target = 'react'
-  output = "src/hooks"
+  output = "src/zenstack-client"
+}
+
+plugin openapi {
+  provider = '@zenstackhq/openapi'
+  output = '../../openapi/schema.yaml'
 }
 
 generator client {

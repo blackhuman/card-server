@@ -1,9 +1,7 @@
 openapi: 3.1.0
 info:
-  title: card-server
-  version: 0.0.1
-  description: Card Server OpenAPI Spec
-  summary: Card Server OpenAPI Spec
+  title: ZenStack Generated API
+  version: 1.0.0
 tags:
   - name: card
     description: Card operations
@@ -92,7 +90,9 @@ components:
             - type: "null"
             - $ref: "#/components/schemas/Article"
         articleId:
-          type: string
+          oneOf:
+            - type: "null"
+            - type: string
         conversation:
           oneOf:
             - type: "null"
@@ -108,14 +108,14 @@ components:
           type: string
           format: date-time
         createdById:
-          type: string
+          oneOf:
+            - type: "null"
+            - type: string
       required:
         - id
         - text
-        - articleId
         - createdAt
         - updatedAt
-        - createdById
     Article:
       type: object
       properties:
@@ -238,8 +238,9 @@ components:
             - type: "null"
         articleId:
           oneOf:
-            - $ref: "#/components/schemas/StringFilter"
+            - $ref: "#/components/schemas/StringNullableFilter"
             - type: string
+            - type: "null"
         conversationId:
           oneOf:
             - $ref: "#/components/schemas/StringNullableFilter"
@@ -257,16 +258,17 @@ components:
               format: date-time
         createdById:
           oneOf:
-            - $ref: "#/components/schemas/StringFilter"
+            - $ref: "#/components/schemas/StringNullableFilter"
             - type: string
+            - type: "null"
         article:
           oneOf:
-            - $ref: "#/components/schemas/ArticleNullableRelationFilter"
+            - $ref: "#/components/schemas/ArticleNullableScalarRelationFilter"
             - $ref: "#/components/schemas/ArticleWhereInput"
             - type: "null"
         conversation:
           oneOf:
-            - $ref: "#/components/schemas/ConversationNullableRelationFilter"
+            - $ref: "#/components/schemas/ConversationNullableScalarRelationFilter"
             - $ref: "#/components/schemas/ConversationWhereInput"
             - type: "null"
     CardOrderByWithRelationInput:
@@ -289,7 +291,9 @@ components:
             - $ref: "#/components/schemas/SortOrder"
             - $ref: "#/components/schemas/SortOrderInput"
         articleId:
-          $ref: "#/components/schemas/SortOrder"
+          oneOf:
+            - $ref: "#/components/schemas/SortOrder"
+            - $ref: "#/components/schemas/SortOrderInput"
         conversationId:
           oneOf:
             - $ref: "#/components/schemas/SortOrder"
@@ -299,7 +303,9 @@ components:
         updatedAt:
           $ref: "#/components/schemas/SortOrder"
         createdById:
-          $ref: "#/components/schemas/SortOrder"
+          oneOf:
+            - $ref: "#/components/schemas/SortOrder"
+            - $ref: "#/components/schemas/SortOrderInput"
         article:
           $ref: "#/components/schemas/ArticleOrderByWithRelationInput"
         conversation:
@@ -348,8 +354,9 @@ components:
             - type: "null"
         articleId:
           oneOf:
-            - $ref: "#/components/schemas/StringFilter"
+            - $ref: "#/components/schemas/StringNullableFilter"
             - type: string
+            - type: "null"
         createdAt:
           oneOf:
             - $ref: "#/components/schemas/DateTimeFilter"
@@ -362,16 +369,17 @@ components:
               format: date-time
         createdById:
           oneOf:
-            - $ref: "#/components/schemas/StringFilter"
+            - $ref: "#/components/schemas/StringNullableFilter"
             - type: string
+            - type: "null"
         article:
           oneOf:
-            - $ref: "#/components/schemas/ArticleNullableRelationFilter"
+            - $ref: "#/components/schemas/ArticleNullableScalarRelationFilter"
             - $ref: "#/components/schemas/ArticleWhereInput"
             - type: "null"
         conversation:
           oneOf:
-            - $ref: "#/components/schemas/ConversationNullableRelationFilter"
+            - $ref: "#/components/schemas/ConversationNullableScalarRelationFilter"
             - $ref: "#/components/schemas/ConversationWhereInput"
             - type: "null"
     CardScalarWhereWithAggregatesInput:
@@ -418,8 +426,9 @@ components:
             - type: "null"
         articleId:
           oneOf:
-            - $ref: "#/components/schemas/StringWithAggregatesFilter"
+            - $ref: "#/components/schemas/StringNullableWithAggregatesFilter"
             - type: string
+            - type: "null"
         conversationId:
           oneOf:
             - $ref: "#/components/schemas/StringNullableWithAggregatesFilter"
@@ -437,8 +446,9 @@ components:
               format: date-time
         createdById:
           oneOf:
-            - $ref: "#/components/schemas/StringWithAggregatesFilter"
+            - $ref: "#/components/schemas/StringNullableWithAggregatesFilter"
             - type: string
+            - type: "null"
     ArticleWhereInput:
       type: object
       properties:
@@ -637,7 +647,7 @@ components:
               format: date-time
         card:
           oneOf:
-            - $ref: "#/components/schemas/CardNullableRelationFilter"
+            - $ref: "#/components/schemas/CardNullableScalarRelationFilter"
             - $ref: "#/components/schemas/CardWhereInput"
             - type: "null"
     ConversationOrderByWithRelationInput:
@@ -690,7 +700,7 @@ components:
               format: date-time
         card:
           oneOf:
-            - $ref: "#/components/schemas/CardNullableRelationFilter"
+            - $ref: "#/components/schemas/CardNullableScalarRelationFilter"
             - $ref: "#/components/schemas/CardWhereInput"
             - type: "null"
     ConversationScalarWhereWithAggregatesInput:
@@ -918,7 +928,9 @@ components:
           type: string
           format: date-time
         createdById:
-          type: string
+          oneOf:
+            - type: "null"
+            - type: string
         article:
           $ref: "#/components/schemas/ArticleCreateNestedOneWithoutCardsInput"
         conversation:
@@ -964,7 +976,8 @@ components:
         createdById:
           oneOf:
             - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
+            - type: "null"
         article:
           $ref: "#/components/schemas/ArticleUpdateOneWithoutCardsNestedInput"
         conversation:
@@ -989,7 +1002,9 @@ components:
             - type: "null"
             - type: string
         articleId:
-          type: string
+          oneOf:
+            - type: "null"
+            - type: string
         conversationId:
           oneOf:
             - type: "null"
@@ -1001,10 +1016,11 @@ components:
           type: string
           format: date-time
         createdById:
-          type: string
+          oneOf:
+            - type: "null"
+            - type: string
       required:
         - text
-        - articleId
     CardUpdateManyMutationInput:
       type: object
       properties:
@@ -1044,7 +1060,8 @@ components:
         createdById:
           oneOf:
             - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
+            - type: "null"
     ArticleCreateInput:
       type: object
       properties:
@@ -1449,7 +1466,7 @@ components:
             - type: string
               format: date-time
             - $ref: "#/components/schemas/NestedDateTimeFilter"
-    ArticleNullableRelationFilter:
+    ArticleNullableScalarRelationFilter:
       type: object
       properties:
         is:
@@ -1460,7 +1477,7 @@ components:
           oneOf:
             - type: "null"
             - $ref: "#/components/schemas/ArticleWhereInput"
-    ConversationNullableRelationFilter:
+    ConversationNullableScalarRelationFilter:
       type: object
       properties:
         is:
@@ -1618,7 +1635,7 @@ components:
       properties:
         _count:
           $ref: "#/components/schemas/SortOrder"
-    CardNullableRelationFilter:
+    CardNullableScalarRelationFilter:
       type: object
       properties:
         is:
@@ -2591,7 +2608,9 @@ components:
           type: string
           format: date-time
         createdById:
-          type: string
+          oneOf:
+            - type: "null"
+            - type: string
         conversation:
           $ref: "#/components/schemas/ConversationCreateNestedOneWithoutCardInput"
       required:
@@ -2626,7 +2645,9 @@ components:
           type: string
           format: date-time
         createdById:
-          type: string
+          oneOf:
+            - type: "null"
+            - type: string
       required:
         - text
     CardCreateOrConnectWithoutArticleInput:
@@ -2739,8 +2760,9 @@ components:
             - type: "null"
         articleId:
           oneOf:
-            - $ref: "#/components/schemas/StringFilter"
+            - $ref: "#/components/schemas/StringNullableFilter"
             - type: string
+            - type: "null"
         conversationId:
           oneOf:
             - $ref: "#/components/schemas/StringNullableFilter"
@@ -2758,8 +2780,9 @@ components:
               format: date-time
         createdById:
           oneOf:
-            - $ref: "#/components/schemas/StringFilter"
+            - $ref: "#/components/schemas/StringNullableFilter"
             - type: string
+            - type: "null"
     CardCreateWithoutConversationInput:
       type: object
       properties:
@@ -2786,7 +2809,9 @@ components:
           type: string
           format: date-time
         createdById:
-          type: string
+          oneOf:
+            - type: "null"
+            - type: string
         article:
           $ref: "#/components/schemas/ArticleCreateNestedOneWithoutCardsInput"
       required:
@@ -2811,7 +2836,9 @@ components:
             - type: "null"
             - type: string
         articleId:
-          type: string
+          oneOf:
+            - type: "null"
+            - type: string
         createdAt:
           type: string
           format: date-time
@@ -2819,10 +2846,11 @@ components:
           type: string
           format: date-time
         createdById:
-          type: string
+          oneOf:
+            - type: "null"
+            - type: string
       required:
         - text
-        - articleId
     CardCreateOrConnectWithoutConversationInput:
       type: object
       properties:
@@ -2901,7 +2929,8 @@ components:
         createdById:
           oneOf:
             - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
+            - type: "null"
         article:
           $ref: "#/components/schemas/ArticleUpdateOneWithoutCardsNestedInput"
     CardUncheckedUpdateWithoutConversationInput:
@@ -2933,7 +2962,8 @@ components:
         articleId:
           oneOf:
             - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
+            - type: "null"
         createdAt:
           oneOf:
             - type: string
@@ -2947,7 +2977,8 @@ components:
         createdById:
           oneOf:
             - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
+            - type: "null"
     CardCreateManyArticleInput:
       type: object
       properties:
@@ -2978,7 +3009,9 @@ components:
           type: string
           format: date-time
         createdById:
-          type: string
+          oneOf:
+            - type: "null"
+            - type: string
       required:
         - text
     CardUpdateWithoutArticleInput:
@@ -3020,7 +3053,8 @@ components:
         createdById:
           oneOf:
             - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
+            - type: "null"
         conversation:
           $ref: "#/components/schemas/ConversationUpdateOneWithoutCardNestedInput"
     CardUncheckedUpdateWithoutArticleInput:
@@ -3067,7 +3101,8 @@ components:
         createdById:
           oneOf:
             - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
+            - type: "null"
     CardUncheckedUpdateManyWithoutArticleInput:
       type: object
       properties:
@@ -3112,22 +3147,23 @@ components:
         createdById:
           oneOf:
             - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-    CardArgs:
+            - $ref: "#/components/schemas/NullableStringFieldUpdateOperationsInput"
+            - type: "null"
+    CardDefaultArgs:
       type: object
       properties:
         select:
           $ref: "#/components/schemas/CardSelect"
         include:
           $ref: "#/components/schemas/CardInclude"
-    ArticleArgs:
+    ArticleDefaultArgs:
       type: object
       properties:
         select:
           $ref: "#/components/schemas/ArticleSelect"
         include:
           $ref: "#/components/schemas/ArticleInclude"
-    ConversationArgs:
+    ConversationDefaultArgs:
       type: object
       properties:
         select:
@@ -3140,11 +3176,11 @@ components:
         article:
           oneOf:
             - type: boolean
-            - $ref: "#/components/schemas/ArticleArgs"
+            - $ref: "#/components/schemas/ArticleDefaultArgs"
         conversation:
           oneOf:
             - type: boolean
-            - $ref: "#/components/schemas/ConversationArgs"
+            - $ref: "#/components/schemas/ConversationDefaultArgs"
     ArticleInclude:
       type: object
       properties:
@@ -3155,20 +3191,20 @@ components:
         _count:
           oneOf:
             - type: boolean
-            - $ref: "#/components/schemas/ArticleCountOutputTypeArgs"
+            - $ref: "#/components/schemas/ArticleCountOutputTypeDefaultArgs"
     ConversationInclude:
       type: object
       properties:
         card:
           oneOf:
             - type: boolean
-            - $ref: "#/components/schemas/CardArgs"
+            - $ref: "#/components/schemas/CardDefaultArgs"
     ArticleCountOutputTypeSelect:
       type: object
       properties:
         cards:
           type: boolean
-    ArticleCountOutputTypeArgs:
+    ArticleCountOutputTypeDefaultArgs:
       type: object
       properties:
         select:
@@ -3189,13 +3225,13 @@ components:
         article:
           oneOf:
             - type: boolean
-            - $ref: "#/components/schemas/ArticleArgs"
+            - $ref: "#/components/schemas/ArticleDefaultArgs"
         articleId:
           type: boolean
         conversation:
           oneOf:
             - type: boolean
-            - $ref: "#/components/schemas/ConversationArgs"
+            - $ref: "#/components/schemas/ConversationDefaultArgs"
         conversationId:
           type: boolean
         createdAt:
@@ -3226,7 +3262,7 @@ components:
         _count:
           oneOf:
             - type: boolean
-            - $ref: "#/components/schemas/ArticleCountOutputTypeArgs"
+            - $ref: "#/components/schemas/ArticleCountOutputTypeDefaultArgs"
     ConversationSelect:
       type: object
       properties:
@@ -3237,7 +3273,7 @@ components:
         card:
           oneOf:
             - type: boolean
-            - $ref: "#/components/schemas/CardArgs"
+            - $ref: "#/components/schemas/CardDefaultArgs"
         createdAt:
           type: boolean
         updatedAt:
@@ -3492,7 +3528,9 @@ components:
             - type: "null"
             - type: string
         articleId:
-          type: string
+          oneOf:
+            - type: "null"
+            - type: string
         conversationId:
           oneOf:
             - type: "null"
@@ -3504,7 +3542,9 @@ components:
           type: string
           format: date-time
         createdById:
-          type: string
+          oneOf:
+            - type: "null"
+            - type: string
         _count:
           oneOf:
             - type: "null"
@@ -3520,10 +3560,8 @@ components:
       required:
         - id
         - text
-        - articleId
         - createdAt
         - updatedAt
-        - createdById
     AggregateArticle:
       type: object
       properties:
@@ -4809,7 +4847,7 @@ components:
         meta:
           $ref: "#/components/schemas/_Meta"
 paths:
-  /api/model/card/create:
+  /card/create:
     post:
       operationId: createCard
       description: Create a new Card
@@ -4854,7 +4892,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CardCreateArgs"
-  /api/model/card/createMany:
+  /card/createMany:
     post:
       operationId: createManyCard
       description: Create several Card
@@ -4899,12 +4937,13 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CardCreateManyArgs"
-  /api/model/card/findUnique:
+  /card/findUnique:
     get:
       operationId: findUniqueCard
       description: Find one unique Card
       tags:
         - card
+      security: []
       responses:
         "200":
           description: Successful operation
@@ -4954,12 +4993,13 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/card/findFirst:
+  /card/findFirst:
     get:
       operationId: findFirstCard
       description: Find the first Card matching the given condition
       tags:
         - card
+      security: []
       responses:
         "200":
           description: Successful operation
@@ -5009,12 +5049,13 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/card/findMany:
+  /card/findMany:
     get:
       operationId: findManyCard
       description: Find a list of Card
       tags:
         - card
+      security: []
       responses:
         "200":
           description: Successful operation
@@ -5066,7 +5107,7 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/card/update:
+  /card/update:
     patch:
       operationId: updateCard
       description: Update a Card
@@ -5111,7 +5152,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CardUpdateArgs"
-  /api/model/card/updateMany:
+  /card/updateMany:
     patch:
       operationId: updateManyCard
       description: Update Cards matching the given condition
@@ -5156,7 +5197,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CardUpdateManyArgs"
-  /api/model/card/upsert:
+  /card/upsert:
     post:
       operationId: upsertCard
       description: Upsert a Card
@@ -5201,7 +5242,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CardUpsertArgs"
-  /api/model/card/delete:
+  /card/delete:
     delete:
       operationId: deleteCard
       description: Delete one unique Card
@@ -5256,7 +5297,7 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/card/deleteMany:
+  /card/deleteMany:
     delete:
       operationId: deleteManyCard
       description: Delete Cards matching the given condition
@@ -5311,12 +5352,13 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/card/count:
+  /card/count:
     get:
       operationId: countCard
       description: Find a list of Card
       tags:
         - card
+      security: []
       responses:
         "200":
           description: Successful operation
@@ -5368,12 +5410,13 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/card/aggregate:
+  /card/aggregate:
     get:
       operationId: aggregateCard
       description: Aggregate Cards
       tags:
         - card
+      security: []
       responses:
         "200":
           description: Successful operation
@@ -5423,12 +5466,13 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/card/groupBy:
+  /card/groupBy:
     get:
       operationId: groupByCard
       description: Group Cards by fields
       tags:
         - card
+      security: []
       responses:
         "200":
           description: Successful operation
@@ -5480,7 +5524,7 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/article/create:
+  /article/create:
     post:
       operationId: createArticle
       description: Create a new Article
@@ -5525,7 +5569,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/ArticleCreateArgs"
-  /api/model/article/createMany:
+  /article/createMany:
     post:
       operationId: createManyArticle
       description: Create several Article
@@ -5570,12 +5614,13 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/ArticleCreateManyArgs"
-  /api/model/article/findUnique:
+  /article/findUnique:
     get:
       operationId: findUniqueArticle
       description: Find one unique Article
       tags:
         - article
+      security: []
       responses:
         "200":
           description: Successful operation
@@ -5625,12 +5670,13 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/article/findFirst:
+  /article/findFirst:
     get:
       operationId: findFirstArticle
       description: Find the first Article matching the given condition
       tags:
         - article
+      security: []
       responses:
         "200":
           description: Successful operation
@@ -5680,12 +5726,13 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/article/findMany:
+  /article/findMany:
     get:
       operationId: findManyArticle
       description: Find a list of Article
       tags:
         - article
+      security: []
       responses:
         "200":
           description: Successful operation
@@ -5737,7 +5784,7 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/article/update:
+  /article/update:
     patch:
       operationId: updateArticle
       description: Update a Article
@@ -5782,7 +5829,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/ArticleUpdateArgs"
-  /api/model/article/updateMany:
+  /article/updateMany:
     patch:
       operationId: updateManyArticle
       description: Update Articles matching the given condition
@@ -5827,7 +5874,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/ArticleUpdateManyArgs"
-  /api/model/article/upsert:
+  /article/upsert:
     post:
       operationId: upsertArticle
       description: Upsert a Article
@@ -5872,7 +5919,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/ArticleUpsertArgs"
-  /api/model/article/delete:
+  /article/delete:
     delete:
       operationId: deleteArticle
       description: Delete one unique Article
@@ -5927,7 +5974,7 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/article/deleteMany:
+  /article/deleteMany:
     delete:
       operationId: deleteManyArticle
       description: Delete Articles matching the given condition
@@ -5982,12 +6029,13 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/article/count:
+  /article/count:
     get:
       operationId: countArticle
       description: Find a list of Article
       tags:
         - article
+      security: []
       responses:
         "200":
           description: Successful operation
@@ -6039,12 +6087,13 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/article/aggregate:
+  /article/aggregate:
     get:
       operationId: aggregateArticle
       description: Aggregate Articles
       tags:
         - article
+      security: []
       responses:
         "200":
           description: Successful operation
@@ -6094,12 +6143,13 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/article/groupBy:
+  /article/groupBy:
     get:
       operationId: groupByArticle
       description: Group Articles by fields
       tags:
         - article
+      security: []
       responses:
         "200":
           description: Successful operation
@@ -6151,7 +6201,7 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/conversation/create:
+  /conversation/create:
     post:
       operationId: createConversation
       description: Create a new Conversation
@@ -6196,7 +6246,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/ConversationCreateArgs"
-  /api/model/conversation/createMany:
+  /conversation/createMany:
     post:
       operationId: createManyConversation
       description: Create several Conversation
@@ -6241,12 +6291,13 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/ConversationCreateManyArgs"
-  /api/model/conversation/findUnique:
+  /conversation/findUnique:
     get:
       operationId: findUniqueConversation
       description: Find one unique Conversation
       tags:
         - conversation
+      security: []
       responses:
         "200":
           description: Successful operation
@@ -6296,12 +6347,13 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/conversation/findFirst:
+  /conversation/findFirst:
     get:
       operationId: findFirstConversation
       description: Find the first Conversation matching the given condition
       tags:
         - conversation
+      security: []
       responses:
         "200":
           description: Successful operation
@@ -6351,12 +6403,13 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/conversation/findMany:
+  /conversation/findMany:
     get:
       operationId: findManyConversation
       description: Find a list of Conversation
       tags:
         - conversation
+      security: []
       responses:
         "200":
           description: Successful operation
@@ -6408,7 +6461,7 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/conversation/update:
+  /conversation/update:
     patch:
       operationId: updateConversation
       description: Update a Conversation
@@ -6453,7 +6506,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/ConversationUpdateArgs"
-  /api/model/conversation/updateMany:
+  /conversation/updateMany:
     patch:
       operationId: updateManyConversation
       description: Update Conversations matching the given condition
@@ -6498,7 +6551,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/ConversationUpdateManyArgs"
-  /api/model/conversation/upsert:
+  /conversation/upsert:
     post:
       operationId: upsertConversation
       description: Upsert a Conversation
@@ -6543,7 +6596,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/ConversationUpsertArgs"
-  /api/model/conversation/delete:
+  /conversation/delete:
     delete:
       operationId: deleteConversation
       description: Delete one unique Conversation
@@ -6598,7 +6651,7 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/conversation/deleteMany:
+  /conversation/deleteMany:
     delete:
       operationId: deleteManyConversation
       description: Delete Conversations matching the given condition
@@ -6653,12 +6706,13 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/conversation/count:
+  /conversation/count:
     get:
       operationId: countConversation
       description: Find a list of Conversation
       tags:
         - conversation
+      security: []
       responses:
         "200":
           description: Successful operation
@@ -6710,12 +6764,13 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/conversation/aggregate:
+  /conversation/aggregate:
     get:
       operationId: aggregateConversation
       description: Aggregate Conversations
       tags:
         - conversation
+      security: []
       responses:
         "200":
           description: Successful operation
@@ -6765,12 +6820,13 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/conversation/groupBy:
+  /conversation/groupBy:
     get:
       operationId: groupByConversation
       description: Group Conversations by fields
       tags:
         - conversation
+      security: []
       responses:
         "200":
           description: Successful operation
@@ -6822,7 +6878,7 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/user/create:
+  /user/create:
     post:
       operationId: createUser
       description: Create a new User
@@ -6868,7 +6924,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/UserCreateArgs"
-  /api/model/user/createMany:
+  /user/createMany:
     post:
       operationId: createManyUser
       description: Create several User
@@ -6914,7 +6970,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/UserCreateManyArgs"
-  /api/model/user/findUnique:
+  /user/findUnique:
     get:
       operationId: findUniqueUser
       description: Find one unique User
@@ -6970,7 +7026,7 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/user/findFirst:
+  /user/findFirst:
     get:
       operationId: findFirstUser
       description: Find the first User matching the given condition
@@ -7026,7 +7082,7 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/user/findMany:
+  /user/findMany:
     get:
       operationId: findManyUser
       description: Find a list of User
@@ -7084,7 +7140,7 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/user/update:
+  /user/update:
     patch:
       operationId: updateUser
       description: Update a User
@@ -7129,7 +7185,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/UserUpdateArgs"
-  /api/model/user/updateMany:
+  /user/updateMany:
     patch:
       operationId: updateManyUser
       description: Update Users matching the given condition
@@ -7174,7 +7230,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/UserUpdateManyArgs"
-  /api/model/user/upsert:
+  /user/upsert:
     post:
       operationId: upsertUser
       description: Upsert a User
@@ -7219,7 +7275,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/UserUpsertArgs"
-  /api/model/user/delete:
+  /user/delete:
     delete:
       operationId: deleteUser
       description: Delete one unique User
@@ -7274,7 +7330,7 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/user/deleteMany:
+  /user/deleteMany:
     delete:
       operationId: deleteManyUser
       description: Delete Users matching the given condition
@@ -7329,7 +7385,7 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/user/count:
+  /user/count:
     get:
       operationId: countUser
       description: Find a list of User
@@ -7387,7 +7443,7 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/user/aggregate:
+  /user/aggregate:
     get:
       operationId: aggregateUser
       description: Aggregate Users
@@ -7443,7 +7499,7 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/user/groupBy:
+  /user/groupBy:
     get:
       operationId: groupByUser
       description: Group Users by fields

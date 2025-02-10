@@ -45,3 +45,4 @@ packages/client/src/hooks/
 .zenstack_repl_history
 .turbo/
 .vercel/
+zenstack-client/
