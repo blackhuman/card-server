@@ -15,8 +15,6 @@ const config = {
   experimental: {
     urlImports: ['https://accounts.google.com/gsi/client'],
   },
-  transpilePackages: ['@relba/card-client'],
-  outputFileTracingRoot: path.join(__dirname, '../../')
 };
 
 export default config;
