@@ -1,10 +1,17 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-plugin hooks {
+plugin tanstack_query {
   provider = '@zenstackhq/tanstack-query'
   target = 'react'
   output = "src/zenstack-client"
+}
+
+plugin tanstack_query_portable {
+  provider = '@zenstackhq/tanstack-query'
+  target = 'react'
+  output = "../../packages/client/src/zenstack-client"
+  portable = true
 }
 
 plugin openapi {

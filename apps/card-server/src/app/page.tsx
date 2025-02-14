@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from 'react';
 import { 
   useCreateCard, useDeleteCard, useFindManyCard, useUpdateCard, 
-  useUpsertArticle,
+  useUpsertArticle
 } from "~/zenstack-client";
 import { createSupabaseClient } from '~/server/supabase-client';
 import { Card } from '@zenstackhq/runtime/models';
@@ -90,6 +90,10 @@ const Cards = ({ user }: { user: AuthUser }) => {
     await deleteCard({ where: { id: card.id } });
   }
 
+  async function editCard(id: string) {
+    await updateCard({ where: { id }, data: { textTranslation: 'test' } });
+  }
+
   return (
     <div className="container flex flex-col text-white">
       <button
@@ -103,10 +107,13 @@ const Cards = ({ user }: { user: AuthUser }) => {
         {cards?.map((card) => (
           <li key={card.id} className="flex items-end justify-between gap-4">
             <p className={`text-2xl`}>
-              {card.text}
-              <span className="text-lg"> by {card.createdById}</span>
+              <span>{card.text}</span>
+              <span className='text-gray-500 text-xl pl-2'>{card.textTranslation}</span>
             </p>
             <div className="flex w-32 justify-end gap-1 text-left">
+              <button className="underline" onClick={() => void editCard(card.id)}>
+                Edit
+              </button>
               <button className="underline" onClick={() => void onDelete(card)}>
                 Delete
               </button>

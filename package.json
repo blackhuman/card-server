@@ -2,10 +2,6 @@
   "name": "card-server-monorepo",
   "version": "0.1.0",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
     "npm-check-updates": "npm-check-updates -u --workspaces",
     "publish-client": "dotenv -e .env -- npm publish --workspace @relba/card-client"

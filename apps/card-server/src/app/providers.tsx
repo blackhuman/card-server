@@ -2,7 +2,6 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from '@trpc/client';
-import { SessionProvider } from "next-auth/react";
 import React, { useState } from "react";
 import { trpc } from "~/server/trpc";
 
@@ -31,9 +30,7 @@ export default function Providers(props: React.PropsWithChildren) {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <SessionProvider>
-          {children}
-        </SessionProvider>
+        {children}
       </QueryClientProvider>
     </trpc.Provider>
   );

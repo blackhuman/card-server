@@ -13,7 +13,8 @@
     "dev": "tsc --watch",
     "lint": "eslint \"src/**/*.ts\"",
     "generate": "openapi-typescript ../../openapi/schema.yaml -o ./src/schema.ts",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "publish-local": "NPM_CONFIG_REGISTRY=http://verdaccio.verdaccio.orb.local npm unpublish @relba/card-client@0.2.0 && NPM_CONFIG_REGISTRY=http://verdaccio.verdaccio.orb.local npm publish"
   },
   "devDependencies": {
     "@prisma/client": "^6.3.0",

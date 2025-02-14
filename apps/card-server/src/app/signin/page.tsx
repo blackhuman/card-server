@@ -17,6 +17,7 @@ const Signin: NextPage = () => {
       setIsLoading(true);
       setError(null);
       
+      console.log('signInWithGoogle cookie1', document.cookie)
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -27,6 +28,7 @@ const Signin: NextPage = () => {
           redirectTo: `${window.location.origin}/auth/callback`
         }
       });
+      console.log('signInWithGoogle cookie2', document.cookie)
 
       if (error) {
         setError(error.message);
