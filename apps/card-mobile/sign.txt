@@ -1,0 +1,347 @@
+> Task :app:signingReport
+Variant: debug
+Config: debug
+Store: /Users/august/Developer/Tools/card-server/apps/card-mobile/android/app/debug.keystore
+Alias: androiddebugkey
+MD5: 20:F4:61:48:B7:2D:8E:5E:5C:A2:3D:37:A4:F4:14:90
+SHA1: 5E:8F:16:06:2E:A3:CD:2C:4A:0D:54:78:76:BA:A6:F3:8C:AB:F6:25
+SHA-256: FA:C6:17:45:DC:09:03:78:6F:B9:ED:E6:2A:96:2B:39:9F:73:48:F0:BB:6F:89:9B:83:32:66:75:91:03:3B:9C
+Valid until: 2052年5月1日星期三
+----------
+Variant: release
+Config: debug
+Store: /Users/august/Developer/Tools/card-server/apps/card-mobile/android/app/debug.keystore
+Alias: androiddebugkey
+MD5: 20:F4:61:48:B7:2D:8E:5E:5C:A2:3D:37:A4:F4:14:90
+SHA1: 5E:8F:16:06:2E:A3:CD:2C:4A:0D:54:78:76:BA:A6:F3:8C:AB:F6:25
+SHA-256: FA:C6:17:45:DC:09:03:78:6F:B9:ED:E6:2A:96:2B:39:9F:73:48:F0:BB:6F:89:9B:83:32:66:75:91:03:3B:9C
+Valid until: 2052年5月1日星期三
+----------
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/Developer/Tools/card-server/apps/card-mobile/android/app/debug.keystore
+Alias: androiddebugkey
+MD5: 20:F4:61:48:B7:2D:8E:5E:5C:A2:3D:37:A4:F4:14:90
+SHA1: 5E:8F:16:06:2E:A3:CD:2C:4A:0D:54:78:76:BA:A6:F3:8C:AB:F6:25
+SHA-256: FA:C6:17:45:DC:09:03:78:6F:B9:ED:E6:2A:96:2B:39:9F:73:48:F0:BB:6F:89:9B:83:32:66:75:91:03:3B:9C
+Valid until: 2052年5月1日星期三
+----------
+
+> Task :expo:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-asset:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-blur:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-constants:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-crypto:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-dev-client:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-dev-launcher:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-dev-menu:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-dev-menu-interface:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-file-system:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-font:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-haptics:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-json-utils:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-keep-awake:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-linking:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-manifests:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-modules-core:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-secure-store:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-splash-screen:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-system-ui:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-updates-interface:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :expo-web-browser:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :journeyapps_react-native-quick-sqlite:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :react-native-gesture-handler:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :react-native-google-signin_google-signin:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :react-native-reanimated:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :react-native-safe-area-context:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :react-native-screens:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
+
+> Task :react-native-webview:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: /Users/august/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: 88:D3:A6:53:0C:D8:D9:60:1C:0C:68:F3:D2:70:A3:30
+SHA1: FF:76:4A:5C:52:61:F2:77:2B:59:4C:70:43:12:76:4F:0A:FF:BA:92
+SHA-256: 30:ED:15:FE:FA:04:0E:3E:5A:6B:57:88:3F:D9:E2:83:FE:0E:54:4E:D0:97:D8:BB:F6:DE:81:13:73:9B:EB:E8
+Valid until: 2053年1月7日星期二
+----------
