@@ -5,12 +5,12 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "com.googleusercontent.apps.452949541126-dtul27d8scj72cr9nm7n30bu5o4ootbm",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.relba.cardmobile"
+      "bundleIdentifier": "com.relba.cardmobile1"
     },
     "android": {
       "adaptiveIcon": {

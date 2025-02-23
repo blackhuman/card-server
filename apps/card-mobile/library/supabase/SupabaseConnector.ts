@@ -34,6 +34,7 @@ export class SupabaseConnector implements PowerSyncBackendConnector {
     // Configure Google Sign-In
     GoogleSignin.configure({
       webClientId: AppConfig.googleWebClientId,
+      iosClientId: AppConfig.googleIOSClientId,
       offlineAccess: true,
       scopes: ['profile', 'email'],
     });
@@ -73,11 +74,12 @@ export class SupabaseConnector implements PowerSyncBackendConnector {
   async logout() {
     try {
       // Sign out from Google
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
+      // await GoogleSignin.revokeAccess();
+      // await GoogleSignin.signOut();
       
       // Sign out from Supabase
       const { error } = await this.client.auth.signOut();
+      console.log('logout error', error)
       if (error) {
         throw error;
       }
