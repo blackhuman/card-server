@@ -10,6 +10,8 @@ import {
 } from "~/zenstack-client";
 import { createSupabaseClient } from '~/server/supabase-client';
 import { Card } from '@zenstackhq/runtime/models';
+import { useQuery } from '@powersync/react';
+import { CARD_TABLE } from '~/server/AppSchema';
 
 type AuthUser = { id: string; email?: string | null };
 
@@ -61,6 +63,21 @@ function useFindAllPhrases(userId: string) {
     orderBy: { createdAt: "desc" },
   })
   return data
+}
+
+const Cards2 = ({ user }: { user: AuthUser }) => {
+  const { data: cards } = useQuery<Card & { total_tasks: number; completed_tasks: number }>(`SELECT * FROM ${CARD_TABLE}`)
+
+  return (
+    <div className='space-y-4'>
+      {cards?.map(v => (
+        <div key={v.id} className='flex flex-row gap-8'>
+          <p className='flex-1'>{v.text}</p>
+          <p className='flex-1'>{v.textTranslation}</p>
+        </div>
+      ))}
+    </div>
+  )
 }
 
 const Cards = ({ user }: { user: AuthUser }) => {
@@ -161,7 +178,7 @@ const Home: NextPage = () => {
         <div className="flex flex-col">
           <Welcome user={user} />
           <section className="mt-10">
-            <Cards user={user} />
+            <Cards2 user={user} />
           </section>
         </div>
       </div>

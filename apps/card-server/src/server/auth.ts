@@ -11,6 +11,7 @@ import { type Adapter } from "next-auth/adapters";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import { db } from "~/server/db";
+import { jwtVerify } from "jose";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
