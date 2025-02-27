@@ -3,15 +3,12 @@
 import { type NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from 'react';
-import { 
-  useCreateCard, useDeleteCard, useFindManyCard, useUpdateCard, 
-  useUpsertArticle
-} from "~/zenstack-client";
+import { useEffect, useMemo, useState } from 'react';
 import { createSupabaseClient } from '~/server/supabase-client';
-import { Card } from '@zenstackhq/runtime/models';
 import { useQuery } from '@powersync/react';
-import { CARD_TABLE } from '~/server/AppSchema';
+import { CARD_TABLE, CardTable } from '~/server/AppSchema';
+import { toCompilableQuery } from '@powersync/drizzle-driver';
+import { useSystem } from '~/server/system';
 
 type AuthUser = { id: string; email?: string | null };
 
@@ -51,22 +48,10 @@ const SigninSignup = () => {
   );
 };
 
-function useFindAllPhrases(userId: string) {
-
-  // const { data: collections = [] } = useFindManyCollection({
-  //   include: { createdBy: true, articles: { include: { phrases: true}} },
-  //   orderBy: { createdAt: "desc" },
-  // })
-  // return collections.flatMap(v => v.articles).flatMap(v => v.phrases)
-  const { data = [] } = useFindManyCard({
-    where: { createdById: userId },
-    orderBy: { createdAt: "desc" },
-  })
-  return data
-}
-
 const Cards2 = ({ user }: { user: AuthUser }) => {
-  const { data: cards } = useQuery<Card & { total_tasks: number; completed_tasks: number }>(`SELECT * FROM ${CARD_TABLE}`)
+  const system = useSystem()
+  const sql = useMemo(() => toCompilableQuery(system.dizzleDb.select().from(CardTable)), [system])
+  const { data: cards } = useQuery(sql)
 
   return (
     <div className='space-y-4'>
@@ -79,68 +64,6 @@ const Cards2 = ({ user }: { user: AuthUser }) => {
     </div>
   )
 }
-
-const Cards = ({ user }: { user: AuthUser }) => {
-  const { id: userId } = user;
-  // Post crud hooks
-  const { mutateAsync: createCard } = useCreateCard();
-  const { mutateAsync: updateCard } = useUpdateCard();
-  const { mutateAsync: deleteCard } = useDeleteCard();
-  const { mutateAsync: upsertArticle } = useUpsertArticle();
-
-  const { data: cards} = useFindManyCard({ where: { createdById: userId} })
-
-  async function onCreateCard() {
-    const articleId = 'http://127.0.0.1/resource/1'
-
-    const text = prompt("Enter post name");
-    if (text) {
-      const ab = await createCard({ 
-        data: { 
-          text, 
-        } 
-      });
-    }
-  }
-
-  async function onDelete(card: Card) {
-    await deleteCard({ where: { id: card.id } });
-  }
-
-  async function editCard(id: string) {
-    await updateCard({ where: { id }, data: { textTranslation: 'test' } });
-  }
-
-  return (
-    <div className="container flex flex-col text-white">
-      <button
-        className="rounded border border-white p-2 text-lg"
-        onClick={() => void onCreateCard()}
-      >
-        + Create Card
-      </button>
-
-      <ul className="container mt-8 flex flex-col gap-2">
-        {cards?.map((card) => (
-          <li key={card.id} className="flex items-end justify-between gap-4">
-            <p className={`text-2xl`}>
-              <span>{card.text}</span>
-              <span className='text-gray-500 text-xl pl-2'>{card.textTranslation}</span>
-            </p>
-            <div className="flex w-32 justify-end gap-1 text-left">
-              <button className="underline" onClick={() => void editCard(card.id)}>
-                Edit
-              </button>
-              <button className="underline" onClick={() => void onDelete(card)}>
-                Delete
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
 
 const Home: NextPage = () => {
   const [user, setUser] = useState<AuthUser | null>(null);

@@ -3,14 +3,16 @@
 import { PowerSyncDatabase } from '@powersync/web';
 import React from 'react';
 import Logger from 'js-logger';
-import { AppSchema } from './AppSchema';
+import { AppSchema, drizzleSchema } from './AppSchema';
 import { SupabaseConnector } from './SupabaseConnector';
+import { wrapPowerSyncWithDrizzle } from '@powersync/drizzle-driver';
 
 Logger.useDefaults();
 
 export class System {
   supabaseConnector: SupabaseConnector;
   powersync: PowerSyncDatabase;
+  dizzleDb;
 
   constructor() {
     this.supabaseConnector = new SupabaseConnector();
@@ -19,6 +21,9 @@ export class System {
       database: {
         dbFilename: 'sqlite.db'
       }
+    });
+    this.dizzleDb = wrapPowerSyncWithDrizzle(this.powersync, {
+      schema: drizzleSchema
     });
   }
 
