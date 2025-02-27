@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "npm run generate && next build -d",
+    "build": "npm run generate && next build",
     "db:dev": "prisma migrate dev",
     "db:migrate": "prisma migrate deploy",
     "db:push": "prisma db push",
@@ -55,6 +55,7 @@
     }
   },
   "devDependencies": {
+    "@eslint/js": "^9.21.0",
     "@hey-api/openapi-ts": "^0.64.1",
     "@openapitools/openapi-generator-cli": "^2.16.3",
     "@tailwindcss/postcss": "^4.0.4",

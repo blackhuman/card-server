@@ -102,6 +102,9 @@ importers:
         specifier: ^3.24.1
         version: 3.24.2
     devDependencies:
+      '@eslint/js':
+        specifier: ^9.21.0
+        version: 9.21.0
       '@hey-api/openapi-ts':
         specifier: ^0.64.1
         version: 0.64.6(typescript@5.7.3)
