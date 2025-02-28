@@ -1,20 +1,35 @@
 import { column, Schema, Table } from '@powersync/web';
 import { DrizzleAppSchema, toPowerSyncTable } from '@powersync/drizzle-driver'
 import { sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { sql } from 'drizzle-orm';
+import { createSupabaseClient } from './supabase-client';
 
 export const CARD_TABLE = 'Card';
 
+const supabase = createSupabaseClient();
+
+function generateUniqueString(length: number = 12): string {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let uniqueString = "";
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    uniqueString += characters[randomIndex];
+  }
+  return uniqueString;
+}
+
 export const CardTable = sqliteTable('Card', {
-  id: text(),
+  id: text().primaryKey().$default(() => generateUniqueString()),
   text: text().notNull(),
   textTranslation: text(),
   sentence: text(),
   sentenceTranslation: text(),
   articleId: text(),
   conversationId: text(),
-  createdAt: text(),
-  updatedAt: text(),
-  createdById: text()
+  createdAt: text().default(sql`(CURRENT_TIMESTAMP)`),
+  updatedAt: text().default(sql`(CURRENT_TIMESTAMP)`),
+  createdById: text(),
 });
 
 export const drizzleSchema = {

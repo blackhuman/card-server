@@ -1,6 +1,5 @@
 import { AbstractPowerSyncDatabase, CrudEntry, PowerSyncBackendConnector, UpdateType } from '@powersync/web';
 
-import { SupabaseClient, createClient } from '@supabase/supabase-js';
 import { createSupabaseClient } from './supabase-client';
 
 /// Postgres Response codes that we cannot recover from by retrying.
@@ -16,7 +15,7 @@ const FATAL_RESPONSE_CODES = [
 ];
 
 export class SupabaseConnector implements PowerSyncBackendConnector {
-  public client: SupabaseClient;
+  public client
 
   constructor() {
     this.client = createSupabaseClient()
@@ -91,8 +90,8 @@ export class SupabaseConnector implements PowerSyncBackendConnector {
         }
 
         if (result.error) {
-          console.error(result.error);
           result.error.message = `Could not ${op.op} data to Supabase error: ${JSON.stringify(result)}`;
+          console.error('supabase uploadData error', result.error);
           throw result.error;
         }
       }

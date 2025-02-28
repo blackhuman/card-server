@@ -3,12 +3,13 @@
 import { type NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { createSupabaseClient } from '~/server/supabase-client';
 import { useQuery } from '@powersync/react';
 import { CARD_TABLE, CardTable } from '~/server/AppSchema';
 import { toCompilableQuery } from '@powersync/drizzle-driver';
 import { useSystem } from '~/server/system';
+import { eq } from 'drizzle-orm';
 
 type AuthUser = { id: string; email?: string | null };
 
@@ -48,19 +49,73 @@ const SigninSignup = () => {
   );
 };
 
-const Cards2 = ({ user }: { user: AuthUser }) => {
+const Cards = () => {
   const system = useSystem()
   const sql = useMemo(() => toCompilableQuery(system.dizzleDb.select().from(CardTable)), [system])
   const { data: cards } = useQuery(sql)
 
+  const insertCard = useCallback(async () => {
+    try {
+      const { data: { session } } = await system.supabaseConnector.client.auth.getSession()
+      const userId = session?.user.id
+      const insertResult = await system.dizzleDb.insert(CardTable).values({
+        text: 'Hello',
+        textTranslation: 'Hello',
+        createdById: userId,
+      })
+      console.log('insert result', insertResult)
+    } catch (e) {
+      console.error(e)
+    }
+  }, [system])
+
+  const editCard = useCallback(async (id: string) => {
+    try {
+      const value = await system.dizzleDb.select().from(CardTable)
+        .where(eq(CardTable.id, id))
+        console.log('editing card', id, value)
+      const updateResult = await system.dizzleDb.update(CardTable).set({
+        textTranslation: 'Hello',
+      }).where(eq(CardTable.id, id))
+      console.log('update result', updateResult)
+    } catch (e) {
+      console.error(e)
+    }
+  }, [system])
+
+  const deleteCard = useCallback(async (id: string) => {
+    try {
+      const deleteResult = await system.dizzleDb.delete(CardTable)
+        .where(eq(CardTable.id, id))
+      console.log('delete result', deleteResult)
+    } catch (e) {
+      console.error(e)
+    }
+  }, [system])
+
   return (
-    <div className='space-y-4'>
-      {cards?.map(v => (
-        <div key={v.id} className='flex flex-row gap-8'>
-          <p className='flex-1'>{v.text}</p>
-          <p className='flex-1'>{v.textTranslation}</p>
-        </div>
-      ))}
+    <div>
+      <button className="underline cursor-pointer" onClick={insertCard}>
+        Insert card
+      </button>
+      <ul className="container mt-8 flex flex-col gap-2">
+        {cards?.map((card) => (
+          <li key={card.id} className="flex items-end justify-between gap-4">
+            <p className={`text-2xl`}>
+              <span>{card.text}</span>
+              <span className='text-gray-500 text-xl pl-2'>{card.textTranslation}</span>
+            </p>
+            <div className="flex w-32 justify-end gap-1 text-left">
+              <button className="underline cursor-pointer" onClick={() => editCard(card.id)}>
+                Edit
+              </button>
+              <button className="underline cursor-pointer" onClick={() => deleteCard(card.id)}>
+                Delete
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
@@ -101,7 +156,7 @@ const Home: NextPage = () => {
         <div className="flex flex-col">
           <Welcome user={user} />
           <section className="mt-10">
-            <Cards2 user={user} />
+            <Cards />
           </section>
         </div>
       </div>
