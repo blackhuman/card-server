@@ -16,7 +16,11 @@ export default function SettingsScreen() {
   useEffect(() => {
     const getCurrentUser = async () => {
       const { data: { session } } = await supabaseConnector.client.auth.getSession();
-      setUser(session?.user);
+      if (session?.user) {
+        setUser(session?.user);
+      } else {
+        router.replace('/login');
+      }
     };
     getCurrentUser();
   }, []);

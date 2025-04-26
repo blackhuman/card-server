@@ -66,6 +66,7 @@ export class System {
     await this.powersync.init();
     await this.powersync.connect(this.supabaseConnector);
 
+    console.log('system initialized')
     // if (this.attachmentQueue) {
     //   await this.attachmentQueue.init();
     // }

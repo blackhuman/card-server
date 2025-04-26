@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Platform, View } from 'react-native';
+import { Image, StyleSheet, Platform, View, ScrollView } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
@@ -38,7 +38,7 @@ export default function HomeScreen() {
         title='Refresh'
         buttonStyle={styles.refreshButton}
       />
-      <View style={styles.cardList}>
+      <ScrollView style={styles.cardList} contentContainerStyle={styles.cardListContent}>
         {cardRecords?.map(card => (
           <Card key={card.id} containerStyle={styles.cardContainer}>
             <View style={styles.cardRow}>
@@ -55,7 +55,7 @@ export default function HomeScreen() {
             </View>
           </Card>
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -68,7 +68,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   cardList: {
+    flex: 1,
+  },
+  cardListContent: {
     paddingHorizontal: 8,
+    paddingBottom: 80,
   },
   cardContainer: {
     borderRadius: 12,

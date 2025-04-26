@@ -116,7 +116,7 @@ export class SupabaseConnector implements PowerSyncBackendConnector {
       throw new Error(`Could not fetch Supabase credentials: ${error}`);
     }
 
-    console.debug('session expires at', session.expires_at);
+    // console.debug('session expires at', session.expires_at);
 
     return {
       endpoint: AppConfig.powersyncUrl,

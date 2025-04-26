@@ -38,15 +38,14 @@ export default function RootLayout() {
   }, [])
 
   useEffect(() => {
-    system.supabaseConnector.client.auth.onAuthStateChange((event, session) => {
+    system.supabaseConnector.client.auth.onAuthStateChange(async (event, session) => {
       console.log('onAuthStateChange event', event)
-      console.log('onAuthStateChange session', session)
       const userId = session?.user.id
       if (userId) {
-        system.init()
+        await system.init()
         router.replace('/(tabs)')
       } else {
-        system.destroy()
+        await system.destroy()
         router.replace('/login')
       }
     })

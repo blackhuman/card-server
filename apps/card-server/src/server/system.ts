@@ -1,6 +1,6 @@
 // import '@azure/core-asynciterator-polyfill';
 
-import { PowerSyncDatabase } from '@powersync/web';
+import { PowerSyncDatabase, resolveWebPowerSyncFlags } from '@powersync/web';
 import React from 'react';
 import Logger from 'js-logger';
 import { AppSchema, drizzleSchema } from './AppSchema';
@@ -15,12 +15,25 @@ export class System {
   dizzleDb;
 
   constructor() {
+    const flags = resolveWebPowerSyncFlags(globalThis.window !== undefined ? {
+      enableMultiTabs: true,
+      broadcastLogs: true,
+      disableSSRWarning: true,
+      ssrMode: false,
+      useWebWorker: true,
+    } : {
+      disableSSRWarning: true,
+      ssrMode: true,
+      useWebWorker: false,
+      enableMultiTabs: false,
+      broadcastLogs: false,
+    })
     this.supabaseConnector = new SupabaseConnector();
     this.powersync = new PowerSyncDatabase({
       schema: AppSchema,
       database: {
-        dbFilename: 'sqlite.db'
-      }
+        dbFilename: 'sqlite.db',
+      },
     });
     this.dizzleDb = wrapPowerSyncWithDrizzle(this.powersync, {
       schema: drizzleSchema
@@ -28,8 +41,17 @@ export class System {
   }
 
   async init() {
-    await this.powersync.init();
-    await this.powersync.connect(this.supabaseConnector);
+    try {
+      await this.powersync.init();
+    } catch (e) {
+      console.error('init error.', e);
+    }
+    try {
+      await this.powersync.connect(this.supabaseConnector);
+    } catch (e) {
+      console.error('connect error.', e);
+    }
+    console.log('System initialized 2');
   }
 
   async destroy() {
@@ -38,7 +60,5 @@ export class System {
   }
 }
 
-export const system = new System();
-
-export const SystemContext = React.createContext(system);
-export const useSystem = () => React.useContext(SystemContext);
+export const SystemContext = React.createContext<System | null>(null);
+export const useSystem = () => React.useContext(SystemContext)!;

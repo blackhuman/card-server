@@ -52,7 +52,7 @@ export class SupabaseConnector implements PowerSyncBackendConnector {
       throw new Error('NEXT_PUBLIC_CARD_POWERSYNC_URL is not set');
     }
 
-    console.debug('session expires at', session.expires_at);
+    // console.debug('session expires at', session.expires_at);
 
     return {
       endpoint: process.env.NEXT_PUBLIC_CARD_POWERSYNC_URL,
